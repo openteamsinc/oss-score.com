@@ -2,10 +2,6 @@ name: PR Annotations
 
 on: [pull_request]
 
-defaults:
-  run:
-    working-directory: ./site
-
 jobs:
   eslint:
     runs-on: ubuntu-latest
