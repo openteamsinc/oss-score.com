@@ -1,0 +1,33 @@
+[
+    {
+        "source_url": "https://anaconda.org/conda-forge/asdf",
+        "project_name": "asdf",
+        "source_type": "conda",
+        "homepage_url": "https://foo.com",
+        "packages": [
+            {
+                "package_type": "conda",
+                "package_id": "asdf",
+                "latest_version": "2.7.1",
+                "release_date": "2023-09-15"
+            }
+        ],
+        "scores": {
+            "maturity": {
+                "value": "developing",
+                "notes": [
+                    "Package is over 2 years old",
+                    "Regular updates and releases"
+                ]
+            },
+            "health_risk": {
+                "value": "healthy",
+                "notes": [
+                    "Package has a low number of contributors",
+                    "No known vulnerabilities",
+                    "Good test coverage"
+                ]
+            }
+        }
+    }
+]

@@ -1,0 +1,33 @@
+[
+    {
+        "source_url": "https://pypi.org/project/requests/",
+        "project_name": "requests",
+        "source_type": "pypi",
+        "homepage_url": "https://requests.readthedocs.io/",
+        "packages": [
+            {
+                "package_type": "pypi",
+                "package_id": "requests",
+                "latest_version": "2.28.1",
+                "release_date": "2022-06-15"
+            }
+        ],
+        "scores": {
+            "maturity": {
+                "value": "mature",
+                "notes": [
+                    "Package is over 10 years old",
+                    "Regular updates and releases"
+                ]
+            },
+            "health_risk": {
+                "value": "healthy",
+                "notes": [
+                    "Large number of contributors",
+                    "No known vulnerabilities",
+                    "Excellent test coverage"
+                ]
+            }
+        }
+    }
+]
