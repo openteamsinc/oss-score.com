@@ -1,21 +1,7 @@
+import ViewURLButtons from "@/components/viewURLButtons";
+import { ProjectData } from "@/utils/ProjectInterface";
 import { promises as fs } from "fs";
 import * as path from "path";
-
-interface ProjectData {
-  project_name: string;
-  source_type: string;
-  packages: Array<unknown>;
-  scores: {
-    maturity: {
-      value: string;
-      notes: Array<string>;
-    };
-    health_risk: {
-      value: string;
-      notes: Array<string>;
-    };
-  };
-}
 
 export default async function Home() {
   const file = await fs.readFile(
@@ -50,9 +36,9 @@ export default async function Home() {
               </div>
               <div className="grid grid-cols-2 gap-5">
                 <div className="flex w-full flex-col">
-                  <span>
+                  <span className="flex items-center gap-2">
                     Maturity:
-                    <span className="px-4 py-2 font-medium text-white bg-blue-900 rounded-full">
+                    <span className="rounded-full bg-blue-900 px-4 py-2 font-medium text-white">
                       {data.scores.maturity.value}
                     </span>
                   </span>
@@ -63,9 +49,9 @@ export default async function Home() {
                   </ul>
                 </div>
                 <div className="flex w-full flex-col">
-                  <span>
+                  <span className="flex items-center gap-2">
                     Health Risk:
-                    <span className="font-medium text-white bg-green-500 rounded-full px-4 py-2">
+                    <span className="rounded-full bg-green-500 px-4 py-2 font-medium text-white">
                       {data.scores.health_risk.value}
                     </span>
                   </span>
@@ -76,14 +62,7 @@ export default async function Home() {
                   </ul>
                 </div>
               </div>
-              <div className="mt-5 grid grid-cols-2 gap-5 border-t border-gray-300 pt-5">
-                <button className="font-semibold text-blue-500 hover:underline text-start">
-                  Visit Source
-                </button>
-                <button className="font-semibold text-blue-500 hover:underline text-end">
-                  Visit Homepage
-                </button>
-              </div>
+              <ViewURLButtons data={data} />
             </div>
           );
         })}
