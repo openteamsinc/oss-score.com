@@ -1,9 +1,21 @@
 import ViewURLButtons from "@/components/viewURLButtons";
+import { fetchAll, getDB } from "@/utils/database";
+// import duckdb from "duckdb-async";
 import { ProjectData } from "@/utils/ProjectInterface";
 import { promises as fs } from "fs";
 import * as path from "path";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function Home() {
+  console.log("duckdb");
+
+  const db = await getDB();
+  console.log("db", db);
+  const rows = await fetchAll("show tables");
+
+  console.log("db", rows);
   const file = await fs.readFile(
     path.join(process.cwd(), "package-json", "pypi.json"),
     "utf8",
@@ -18,7 +30,7 @@ export default async function Home() {
           return (
             <div
               key={index}
-              className="flex h-min w-full flex-col gap-5 rounded border border-gray-300 p-5 shadow-sm"
+              className="flex h-min w-full flex-col gap-5 rounded border border-slate-300 p-5 shadow-sm"
             >
               <h2 className="text-xl">
                 Project Name:
@@ -42,7 +54,7 @@ export default async function Home() {
                       {data.scores.maturity.value}
                     </span>
                   </span>
-                  <ul className="mt-5 list-disc pl-5 text-sm text-gray-500">
+                  <ul className="mt-5 list-disc pl-5 text-sm text-slate-500">
                     {data.scores.maturity.notes.map((note, noteIndex) => {
                       return <li key={noteIndex}>{note}</li>;
                     })}
@@ -55,7 +67,7 @@ export default async function Home() {
                       {data.scores.health_risk.value}
                     </span>
                   </span>
-                  <ul className="mt-5 list-disc pl-5 text-sm text-gray-500">
+                  <ul className="mt-5 list-disc pl-5 text-sm text-slate-500">
                     {data.scores.health_risk.notes.map((note, noteIndex) => {
                       return <li key={noteIndex}>{note}</li>;
                     })}

@@ -2,6 +2,9 @@
   "name": "openteams-score",
   "version": "0.1.0",
   "private": true,
+  "prettier": {
+    "trailingComma": "all"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -10,13 +13,17 @@
     "lint:report": "next lint --output-file eslint_report.json --format json"
   },
   "dependencies": {
+    "@mdi/js": "^7.4.47",
+    "@mdi/react": "^1.6.1",
     "@typescript-eslint/eslint-plugin": "^7.16.1",
+    "duckdb": "^1.0.0",
+    "duckdb-async": "^1.0.0",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-tailwindcss": "^3.17.4",
-    "next": "14.2.5",
+    "next": "^15.0.0-rc.0",
     "prettier": "^3.3.3",
-    "react": "^18",
-    "react-dom": "^18"
+    "react": "^19.0.0-rc-4c58fce7-20240904",
+    "react-dom": "^19.0.0-rc-4c58fce7-20240904"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -24,6 +31,7 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
+    "html-loader": "^5.1.0",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
