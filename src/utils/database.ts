@@ -8,6 +8,11 @@ export async function initDB(db: duckdb.Database) {
   return new Promise((res, rej) => {
     db.run(
       `
+  INSTALL httpfs;
+  LOAD httpfs; 
+  INSTALL parquet;
+  LOAD parquet; 
+
   CREATE SECRET ( TYPE GCS );
 
   CREATE TABLE scores AS select * from read_parquet('${SCORE_LOCATION}');
