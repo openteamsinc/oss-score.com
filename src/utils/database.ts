@@ -8,6 +8,7 @@ export async function initDB(db: duckdb.Database) {
   return new Promise((res, rej) => {
     db.run(
       `
+  SET home_directory='/tmp';
   INSTALL httpfs;
   LOAD httpfs; 
   INSTALL parquet;
