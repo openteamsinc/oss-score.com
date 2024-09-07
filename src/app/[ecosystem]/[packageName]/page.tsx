@@ -122,9 +122,9 @@ export default async function Package({
           )}
         </div>
       </div>
-      <code>
+      {/* <code>
         <pre>{JSON.stringify(data, null, 2)}</pre>
-      </code>
+      </code> */}
     </article>
   );
 }
