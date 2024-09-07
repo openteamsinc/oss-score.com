@@ -6,8 +6,12 @@ type Props = {
   value: score.MaturityValue;
 };
 export function maturityColor(value: score.MaturityValue) {
-  return "slate-500";
+  switch (value) {
+    default:
+      return "slate-500";
+  }
 }
+
 export function maturityIconPath(value: score.MaturityValue): string {
   switch (value) {
     case score.MATURE:
