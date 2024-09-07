@@ -62,12 +62,11 @@ export async function getDB(): Promise<duckdb.Database> {
   });
 }
 
-const db = await getDB();
-
 export async function fetchAll<T>(
   sql: string,
   ...args: unknown[]
 ): Promise<T[]> {
+  const db = await getDB();
   return new Promise((res, rej) => {
     db.all(sql, ...args, (err, data) => {
       if (err) {
