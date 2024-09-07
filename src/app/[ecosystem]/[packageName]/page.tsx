@@ -1,9 +1,13 @@
 import { fetchOne } from "@/utils/database";
 import { Score } from "@/utils/score";
-import { mdiAlert, mdiPackage } from "@mdi/js";
+import { mdiAlert, mdiCircleSmall } from "@mdi/js";
 import Icon from "@mdi/react";
 import { notFound } from "next/navigation";
-import GithubStats from "./GitHubStats";
+
+import GithubStats from "@/components/GitHubStats";
+import Risk from "@/components/Risk";
+import Maturity from "@/components/Maturity";
+import OtherStats from "@/components/OtherStats";
 
 type Props = {
   params: {
@@ -35,41 +39,68 @@ export default async function Package({
   if (data == null) {
     notFound();
   }
+  const thisPackage = data.packages.find((p) => {
+    return (
+      p.ecosystem.toLowerCase() == ecosystem.toLowerCase() &&
+      p.name.toLowerCase() == packageName.toLowerCase()
+    );
+  });
+  if (thisPackage?.health_risk.value != null) {
+    data.health_risk.value = thisPackage.health_risk.value;
+  }
+  if (
+    thisPackage?.health_risk != null &&
+    thisPackage?.health_risk.notes.length > 0
+  ) {
+    data.health_risk.notes = data.health_risk.notes.concat(
+      thisPackage.health_risk.notes,
+    );
+  }
+
   return (
     <article className="container m-auto">
-      <h1>
+      <h1 className="my-10 text-2xl font-bold">
         {ecosystem}/{packageName}
       </h1>
       <div className="grid grid-cols-2 gap-4">
         <div>
           <section className="mb-2">
-            <h2 className="border-b border-b-slate-300">
-              Maturity: <span>{data.maturity.value}</span>
+            <h2 className="m-2 flex items-center border-b border-b-slate-300 text-lg">
+              Health & Risk: <Risk value={data.health_risk.value} />
             </h2>
-            <ul className="max-w-md list-inside space-y-1 text-slate-500">
-              {data.maturity.notes.map((note, index) => (
-                <li key={index}>{note}</li>
-              ))}
-            </ul>
-          </section>
-          <section className="mb-2">
-            <h2 className="border-b border-b-slate-300">
-              Health & Risk: <span>{data.health_risk.value}</span>
-            </h2>
-            <ul className="max-w-md list-inside space-y-1 text-slate-500">
+            <ul className="w-full list-inside space-y-2 text-sm text-slate-500">
               {data.health_risk.notes.map((note, index) => (
-                <li key={index} className="flex items-center">
-                  <Icon
-                    path={mdiAlert}
-                    size={0.75}
-                    className="mx-2 text-yellow-600"
-                  />
+                <li key={index} className="mb-2 flex items-start">
+                  <span className="h-5 px-2">
+                    <Icon
+                      path={mdiAlert}
+                      size={0.5}
+                      className="  text-yellow-600"
+                    />
+                  </span>
                   {note}
                 </li>
               ))}
             </ul>
           </section>
-          <section>
+          <section className="mb-2">
+            <h2 className="m-2 flex items-center border-b border-b-slate-300 text-lg">
+              Maturity: <Maturity value={data.maturity.value} />
+            </h2>
+            <ul className="w-full list-inside space-y-2 text-sm text-slate-500">
+              {data.maturity.notes.map((note, index) => (
+                <li key={index} className="mb-2 flex items-start">
+                  <span className="h-5 px-2">
+                    <Icon path={mdiCircleSmall} size={0.5} />
+                  </span>
+
+                  {note}
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          {/* <section>
             <h2 className="border-b border-b-slate-300">Packages</h2>
             <ul className="max-w-md list-inside space-y-1 text-slate-500">
               {data.packages.map((packageData, index) => (
@@ -80,13 +111,15 @@ export default async function Package({
                 </li>
               ))}
             </ul>
-          </section>
+          </section> */}
         </div>
         <div>
           <h2 className="border-b border-b-slate-300">Stats</h2>
           {data.source_url.startsWith("https://github.com") ? (
             <GithubStats score={data} />
-          ) : null}
+          ) : (
+            <OtherStats score={data} />
+          )}
         </div>
       </div>
       <code>

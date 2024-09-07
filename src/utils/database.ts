@@ -1,14 +1,16 @@
 import duckdb from "duckdb";
 
+const SCORE_LOCATION = process.env.SCORE_LOCATION || "score.parquet";
+
 let DB: duckdb.Database | null = null;
 
 export async function initDB(db: duckdb.Database) {
-  return new Promise((res) => {
+  return new Promise((res, rej) => {
     db.run(
       `
   CREATE SECRET ( TYPE GCS );
 
-  CREATE TABLE scores AS select * from read_parquet('gs://openteams-score-data/2024-09-04/score.parquet');
+  CREATE TABLE scores AS select * from read_parquet('${SCORE_LOCATION}');
   
   create table packages as
   select 
@@ -21,8 +23,12 @@ export async function initDB(db: duckdb.Database) {
   
   create index index_source_url on scores (source_url);
   `,
-      [],
-      () => {
+
+      (err) => {
+        if (err) {
+          rej(err);
+          return;
+        }
         res(undefined);
       },
     );
@@ -33,7 +39,6 @@ export async function getDB(): Promise<duckdb.Database> {
   if (DB != null) {
     return DB;
   }
-  console.log("cache miss");
   return new Promise((res, rej) => {
     DB = new duckdb.Database(
       ":memory:",

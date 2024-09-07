@@ -13,19 +13,23 @@
     "lint:report": "next lint --output-file eslint_report.json --format json"
   },
   "dependencies": {
+    "@headlessui/react": "^2.1.5",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
     "@typescript-eslint/eslint-plugin": "^7.16.1",
+    "date-fns": "^3.6.0",
     "duckdb": "^1.0.0",
     "duckdb-async": "^1.0.0",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-tailwindcss": "^3.17.4",
+    "lodash": "^4.17.21",
     "next": "^15.0.0-rc.0",
     "prettier": "^3.3.3",
     "react": "^19.0.0-rc-4c58fce7-20240904",
     "react-dom": "^19.0.0-rc-4c58fce7-20240904"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
