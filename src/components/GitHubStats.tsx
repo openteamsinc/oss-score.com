@@ -3,6 +3,7 @@ import { mdiGithub } from "@mdi/js";
 import Icon from "@mdi/react";
 import Link from "next/link";
 import TimeStat from "./TimeStat";
+import SourceCodeLink from "./SourceCodeLink";
 
 type Props = {
   score: Score;
@@ -15,8 +16,7 @@ export default async function GithubStats({ score }: Props) {
       <div className="flex flex-row pb-3">
         <dt className="mb-1 grow text-slate-500">Source</dt>
         <dd className="flex items-center text-blue-900 underline">
-          <Icon path={mdiGithub} size={0.75} />
-          <Link href={url}>{name}</Link>
+          <SourceCodeLink url={url} />
         </dd>
       </div>
       <TimeStat title="Last Source Update" time={score.last_updated} />

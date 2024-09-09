@@ -16,11 +16,9 @@ export default function Generic({
   return (
     <div>
       <h1 className="border-b text-lg text-slate-900">{code}</h1>
-      <div>
-        <h2 className="mb-2 text-base text-slate-900">What could this mean?</h2>
-        <p></p>
-        <h2 className="mb-2 text-base text-slate-900">How to Fix</h2>
-        <p></p>
+      {/* Alert Box */}
+      <div className="mt-4 border-l-4 border-yellow-500 bg-yellow-100 p-4 text-base font-normal text-slate-900">
+        TODO: Add a specific fix for this error code!
       </div>
     </div>
   );
