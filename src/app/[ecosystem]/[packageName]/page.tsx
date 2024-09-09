@@ -1,7 +1,7 @@
 import React from "react";
 import { cachedNotes, fetchOne } from "@/utils/database";
 import { Score } from "@/utils/score";
-import { mdiAlert, mdiCircleSmall, mdiHelpCircleOutline } from "@mdi/js";
+import { mdiAlert, mdiCircleSmall } from "@mdi/js";
 import Icon from "@mdi/react";
 import { notFound } from "next/navigation";
 
@@ -9,6 +9,7 @@ import GithubStats from "@/components/GitHubStats";
 import Risk from "@/components/Risk";
 import Maturity from "@/components/Maturity";
 import OtherStats from "@/components/OtherStats";
+import RiskHelp from "@/components/Help/Risk";
 
 type Props = {
   params: {
@@ -72,25 +73,26 @@ export default async function Package({
               Health & Risk: <Risk value={data.health_risk.value} />
             </h2>
             <ul className="w-full list-inside space-y-2 text-sm text-slate-500">
-              {data.health_risk.notes.map((noteId, index) => (
-                <li key={index} className="mb-2 flex items-start">
-                  <span className="h-5 px-2">
-                    <Icon
-                      path={mdiAlert}
-                      size={0.5}
-                      className="text-yellow-600"
+              {data.health_risk.notes
+                .filter((n) => n != null)
+                .map((noteId, index) => (
+                  <li key={index} className="mb-2 flex items-start">
+                    <span className="h-5 px-2">
+                      <Icon
+                        path={mdiAlert}
+                        size={0.5}
+                        className="text-yellow-600"
+                      />
+                    </span>
+                    {notes[noteId]?.note || `Unknown id ${noteId}`}
+                    <RiskHelp
+                      note={notes[noteId]}
+                      ecosystem={ecosystem}
+                      packageName={packageName}
+                      score={data}
                     />
-                  </span>
-                  {notes[noteId].note}
-                  <button>
-                    <Icon
-                      path={mdiHelpCircleOutline}
-                      className="cursor-pointer text-slate-300 hover:text-slate-500"
-                      size={0.75}
-                    />
-                  </button>
-                </li>
-              ))}
+                  </li>
+                ))}
             </ul>
           </section>
           <section className="mb-2">
@@ -104,7 +106,7 @@ export default async function Package({
                     <Icon path={mdiCircleSmall} size={0.5} />
                   </span>
 
-                  {notes[noteId].note}
+                  {notes[noteId]?.note || `Unknown id ${noteId}`}
                 </li>
               ))}
             </ul>

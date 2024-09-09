@@ -86,18 +86,23 @@ export async function fetchAll<T>(
   });
 }
 
-type Note = {
+export type NoteRow = {
   code: string;
   note: string;
   id: number;
 };
+export type Notes = {
+  [key: string]: NoteRow;
+};
+
 export async function fetchNotes() {
-  return fetchAll<Note>(`select * from notes`);
+  return fetchAll<NoteRow>(`select * from notes`);
 }
 
 export const cachedNotes = React.cache(async () => {
   const notes = await fetchNotes();
-  return Object.fromEntries(notes.map((note) => [note.id, note]));
+  const result = Object.fromEntries(notes.map((note) => [note.id, note]));
+  return result as Notes;
 });
 
 export async function fetchOne<T>(sql: string, ...args: unknown[]): Promise<T> {

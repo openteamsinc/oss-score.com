@@ -10,7 +10,11 @@ type Props = {
 export default async function GithubStats({ score }: Props) {
   const url = score.source_url;
   const name = url.replace("https://github.com/", "");
-
+  const lastUpdated = score.last_updated
+    ? formatDistanceToNow(score.last_updated, {
+        addSuffix: true,
+      })
+    : "N/A";
   return (
     <dl className="max-w-md divide-y divide-slate-200 text-slate-900 ">
       <div className="flex flex-row pb-3">
@@ -22,9 +26,7 @@ export default async function GithubStats({ score }: Props) {
       </div>
       <div className="flex flex-row pb-3">
         <dt className="mb-1 grow text-slate-500">Last Source Update</dt>
-        <dd className="flex items-center">
-          {formatDistanceToNow(score.last_updated, { addSuffix: true })}
-        </dd>
+        <dd className="flex items-center">{lastUpdated}</dd>
       </div>
     </dl>
   );

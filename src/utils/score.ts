@@ -45,7 +45,7 @@ export type Package = {
 
 export type Score = {
   timestamp: Date;
-  last_updated: Date;
+  last_updated?: Date;
   source_url: string;
   maturity: MaturityScore;
   health_risk: HealthRiskScore;
