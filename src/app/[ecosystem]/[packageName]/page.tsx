@@ -1,6 +1,7 @@
-import { fetchOne } from "@/utils/database";
+import React from "react";
+import { cachedNotes, fetchOne } from "@/utils/database";
 import { Score } from "@/utils/score";
-import { mdiAlert, mdiCircleSmall } from "@mdi/js";
+import { mdiAlert, mdiCircleSmall, mdiHelpCircleOutline } from "@mdi/js";
 import Icon from "@mdi/react";
 import { notFound } from "next/navigation";
 
@@ -22,6 +23,8 @@ export const revalidate = 0;
 export default async function Package({
   params: { ecosystem, packageName },
 }: Props) {
+  const notes = await cachedNotes();
+  console.log("notes", notes);
   const data = await fetchOne<Score>(
     `
     select * from scores
@@ -69,16 +72,23 @@ export default async function Package({
               Health & Risk: <Risk value={data.health_risk.value} />
             </h2>
             <ul className="w-full list-inside space-y-2 text-sm text-slate-500">
-              {data.health_risk.notes.map((note, index) => (
+              {data.health_risk.notes.map((noteId, index) => (
                 <li key={index} className="mb-2 flex items-start">
                   <span className="h-5 px-2">
                     <Icon
                       path={mdiAlert}
                       size={0.5}
-                      className="  text-yellow-600"
+                      className="text-yellow-600"
                     />
                   </span>
-                  {note}
+                  {notes[noteId].note}
+                  <button>
+                    <Icon
+                      path={mdiHelpCircleOutline}
+                      className="cursor-pointer text-slate-300 hover:text-slate-500"
+                      size={0.75}
+                    />
+                  </button>
                 </li>
               ))}
             </ul>
@@ -88,13 +98,13 @@ export default async function Package({
               Maturity: <Maturity value={data.maturity.value} />
             </h2>
             <ul className="w-full list-inside space-y-2 text-sm text-slate-500">
-              {data.maturity.notes.map((note, index) => (
+              {data.maturity.notes.map((noteId, index) => (
                 <li key={index} className="mb-2 flex items-start">
                   <span className="h-5 px-2">
                     <Icon path={mdiCircleSmall} size={0.5} />
                   </span>
 
-                  {note}
+                  {notes[noteId].note}
                 </li>
               ))}
             </ul>

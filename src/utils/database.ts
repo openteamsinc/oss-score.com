@@ -1,6 +1,7 @@
+import React from "react";
 import duckdb from "duckdb";
 
-const SCORE_LOCATION = process.env.SCORE_LOCATION || "score.parquet";
+const SCORE_LOCATION = process.env.SCORE_LOCATION || ".";
 
 let DB: duckdb.Database | null = null;
 
@@ -16,7 +17,8 @@ export async function initDB(db: duckdb.Database) {
 
   CREATE SECRET ( TYPE GCS );
 
-  CREATE TABLE scores AS select * from read_parquet('${SCORE_LOCATION}');
+  CREATE TABLE notes AS select * from read_parquet('${SCORE_LOCATION}/notes.parquet');
+  CREATE TABLE scores AS select * from read_parquet('${SCORE_LOCATION}/score.parquet');
   
   create table packages as
   select 
@@ -83,6 +85,20 @@ export async function fetchAll<T>(
     });
   });
 }
+
+type Note = {
+  code: string;
+  note: string;
+  id: number;
+};
+export async function fetchNotes() {
+  return fetchAll<Note>(`select * from notes`);
+}
+
+export const cachedNotes = React.cache(async () => {
+  const notes = await fetchNotes();
+  return Object.fromEntries(notes.map((note) => [note.id, note]));
+});
 
 export async function fetchOne<T>(sql: string, ...args: unknown[]): Promise<T> {
   const data = await fetchAll<T>(sql, ...args);
