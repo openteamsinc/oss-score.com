@@ -15,7 +15,7 @@ type Props = {
   score: Score;
 };
 
-function getComponent(code: string): any {
+function getComponent(code: string): React.FC<Props> {
   switch (code) {
     case "FEW_MAX_MONTHLY_AUTHORS":
       return FEW_MAX_MONTHLY_AUTHORS;
