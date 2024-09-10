@@ -117,3 +117,4 @@ export async function fetchOne<T>(sql: string, ...args: unknown[]): Promise<T> {
   const data = await fetchAll<T>(sql, ...args);
   return data[0];
 }
+console.log(process.env);
