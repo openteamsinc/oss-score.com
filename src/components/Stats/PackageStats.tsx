@@ -8,7 +8,7 @@ type Props = {
   score: Score;
   pkg?: Package;
 };
-export default function PackageStats({ score, pkg }: Props) {
+export default function PackageStats({ pkg }: Props) {
   if (pkg == null) {
     return null;
   }
