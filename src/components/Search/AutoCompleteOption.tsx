@@ -29,7 +29,7 @@ export default function AutoCompleteOption({ item }: Props) {
           </span>
           <div className="absolute inset-y-0 right-0 flex items-center space-x-2 pr-3">
             <div
-              className={`flex size-6 items-center justify-center rounded bg-${riskColor(item.health_risk)}`}
+              className={`bg- flex size-6 items-center justify-center rounded${riskColor(item.health_risk)}`}
             >
               <Icon
                 className={`size-4 text-white`}

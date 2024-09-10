@@ -1,18 +1,20 @@
-import { fetchOne } from "@/utils/database";
+import React from "react";
+import { cachedNotes, fetchOne } from "@/utils/database";
 import { Score } from "@/utils/score";
 import { mdiAlert, mdiCircleSmall } from "@mdi/js";
 import Icon from "@mdi/react";
 import { notFound } from "next/navigation";
 
-import GithubStats from "@/components/GitHubStats";
 import Risk from "@/components/Risk";
 import Maturity from "@/components/Maturity";
 import OtherStats from "@/components/OtherStats";
+import RiskHelp from "@/components/Help/Risk";
+import PackageStats from "@/components/Stats/PackageStats";
 
 type Props = {
   params: {
     ecosystem: string;
-    packageName: string;
+    packageName: string[];
   };
 };
 
@@ -22,6 +24,8 @@ export const revalidate = 0;
 export default async function Package({
   params: { ecosystem, packageName },
 }: Props) {
+  const pkgName = packageName.join("/");
+  const notes = await cachedNotes();
   const data = await fetchOne<Score>(
     `
     select * from scores
@@ -34,18 +38,19 @@ export default async function Package({
     )
 `,
     ecosystem,
-    packageName,
+    pkgName,
   );
   if (data == null) {
     notFound();
   }
+
   const thisPackage = data.packages.find((p) => {
     return (
       p.ecosystem.toLowerCase() == ecosystem.toLowerCase() &&
-      p.name.toLowerCase() == packageName.toLowerCase()
+      p.name.toLowerCase() == pkgName.toLowerCase()
     );
   });
-  if (thisPackage?.health_risk.value != null) {
+  if (thisPackage?.health_risk?.value != null) {
     data.health_risk.value = thisPackage.health_risk.value;
   }
   if (
@@ -69,18 +74,26 @@ export default async function Package({
               Health & Risk: <Risk value={data.health_risk.value} />
             </h2>
             <ul className="w-full list-inside space-y-2 text-sm text-slate-500">
-              {data.health_risk.notes.map((note, index) => (
-                <li key={index} className="mb-2 flex items-start">
-                  <span className="h-5 px-2">
-                    <Icon
-                      path={mdiAlert}
-                      size={0.5}
-                      className="  text-yellow-600"
+              {data.health_risk.notes
+                .filter((n) => n != null)
+                .map((noteId, index) => (
+                  <li key={index} className="mb-2 flex items-start">
+                    <span className="h-5 px-2">
+                      <Icon
+                        path={mdiAlert}
+                        size={0.5}
+                        className="text-yellow-600"
+                      />
+                    </span>
+                    {notes[noteId]?.note || `Unknown id ${noteId}`}
+                    <RiskHelp
+                      note={notes[noteId]}
+                      ecosystem={ecosystem}
+                      packageName={pkgName}
+                      score={data}
                     />
-                  </span>
-                  {note}
-                </li>
-              ))}
+                  </li>
+                ))}
             </ul>
           </section>
           <section className="mb-2">
@@ -88,13 +101,13 @@ export default async function Package({
               Maturity: <Maturity value={data.maturity.value} />
             </h2>
             <ul className="w-full list-inside space-y-2 text-sm text-slate-500">
-              {data.maturity.notes.map((note, index) => (
+              {data.maturity.notes.map((noteId, index) => (
                 <li key={index} className="mb-2 flex items-start">
                   <span className="h-5 px-2">
                     <Icon path={mdiCircleSmall} size={0.5} />
                   </span>
 
-                  {note}
+                  {notes[noteId]?.note || `Unknown id ${noteId}`}
                 </li>
               ))}
             </ul>
@@ -114,12 +127,10 @@ export default async function Package({
           </section> */}
         </div>
         <div>
-          <h2 className="border-b border-b-slate-300">Stats</h2>
-          {data.source_url.startsWith("https://github.com") ? (
-            <GithubStats score={data} />
-          ) : (
-            <OtherStats score={data} />
-          )}
+          <h2 className="border-b border-b-slate-300">Package Stats</h2>
+          <PackageStats score={data} pkg={thisPackage} />
+          <h2 className="border-b border-b-slate-300">Source Stats</h2>
+          <OtherStats score={data} />
         </div>
       </div>
       {/* <code>

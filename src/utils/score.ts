@@ -39,13 +39,14 @@ export type MaturityScore = {
 export type Package = {
   ecosystem: string;
   name: string;
-  version: string;
-  health_risk: { value: HealthRiskValue | null; notes: string[] };
+  version?: string;
+  release_date?: Date;
+  health_risk?: { value: HealthRiskValue | null; notes: string[] };
 };
 
 export type Score = {
   timestamp: Date;
-  last_updated: Date;
+  last_updated?: Date;
   source_url: string;
   maturity: MaturityScore;
   health_risk: HealthRiskScore;
@@ -55,4 +56,8 @@ export type Score = {
     npm: string | null;
     conda: string | null;
   };
+
+  license: boolean;
+  license_kind: boolean;
+  license_modified: boolean;
 };
