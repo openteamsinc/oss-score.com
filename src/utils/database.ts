@@ -1,12 +1,16 @@
 import React from "react";
 import duckdb from "duckdb";
 import pMemoize from "p-memoize";
+import getConfig from "next/config";
+import path from "path";
 
 export async function getDB(): Promise<duckdb.Database> {
-  console.log("Creating new DB");
+  const PROJECT_ROOT = getConfig().serverRuntimeConfig.PROJECT_ROOT;
+  const dbPath = path.join(process.cwd(), "public/scores.duckdb");
+  console.log("Creating new DB", { PROJECT_ROOT, dbPath });
   return new Promise((res, rej) => {
     const db = new duckdb.Database(
-      "scores.duckdb",
+      dbPath,
       {
         access_mode: "READ_ONLY",
         max_memory: "512MB",

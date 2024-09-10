@@ -27,7 +27,7 @@ create index index_ecosystem_name on packages (ecosystem, name);
 create index index_source_url on scores (source_url);
 `;
 
-const db = new duckdb.Database("scores.duckdb", {}, (err) => {
+const db = new duckdb.Database("public/scores.duckdb", {}, (err) => {
   if (err) {
     console.log(err);
     throw err;
