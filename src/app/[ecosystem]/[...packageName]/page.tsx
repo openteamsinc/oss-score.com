@@ -5,16 +5,16 @@ import { mdiAlert, mdiCircleSmall } from "@mdi/js";
 import Icon from "@mdi/react";
 import { notFound } from "next/navigation";
 
-import GithubStats from "@/components/GitHubStats";
 import Risk from "@/components/Risk";
 import Maturity from "@/components/Maturity";
 import OtherStats from "@/components/OtherStats";
 import RiskHelp from "@/components/Help/Risk";
+import PackageStats from "@/components/Stats/PackageStats";
 
 type Props = {
   params: {
     ecosystem: string;
-    packageName: string;
+    packageName: string[];
   };
 };
 
@@ -24,8 +24,8 @@ export const revalidate = 0;
 export default async function Package({
   params: { ecosystem, packageName },
 }: Props) {
+  const pkgName = packageName.join("/");
   const notes = await cachedNotes();
-  console.log("notes", notes);
   const data = await fetchOne<Score>(
     `
     select * from scores
@@ -38,18 +38,19 @@ export default async function Package({
     )
 `,
     ecosystem,
-    packageName,
+    pkgName,
   );
   if (data == null) {
     notFound();
   }
+
   const thisPackage = data.packages.find((p) => {
     return (
       p.ecosystem.toLowerCase() == ecosystem.toLowerCase() &&
-      p.name.toLowerCase() == packageName.toLowerCase()
+      p.name.toLowerCase() == pkgName.toLowerCase()
     );
   });
-  if (thisPackage?.health_risk.value != null) {
+  if (thisPackage?.health_risk?.value != null) {
     data.health_risk.value = thisPackage.health_risk.value;
   }
   if (
@@ -88,7 +89,7 @@ export default async function Package({
                     <RiskHelp
                       note={notes[noteId]}
                       ecosystem={ecosystem}
-                      packageName={packageName}
+                      packageName={pkgName}
                       score={data}
                     />
                   </li>
@@ -126,12 +127,10 @@ export default async function Package({
           </section> */}
         </div>
         <div>
-          <h2 className="border-b border-b-slate-300">Stats</h2>
-          {data.source_url.startsWith("https://github.com") ? (
-            <GithubStats score={data} />
-          ) : (
-            <OtherStats score={data} />
-          )}
+          <h2 className="border-b border-b-slate-300">Package Stats</h2>
+          <PackageStats score={data} pkg={thisPackage} />
+          <h2 className="border-b border-b-slate-300">Source Stats</h2>
+          <OtherStats score={data} />
         </div>
       </div>
       {/* <code>
