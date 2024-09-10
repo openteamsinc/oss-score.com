@@ -6,8 +6,8 @@ export default async function RiskDistribution() {
   const distribution = await scoreDistribution();
 
   return (
-    <div className="bg-white shadow rounded-lg p-6">
-      <h2 className="text-xl font-semibold mb-4">Health Risk Distribution</h2>
+    <div className="rounded-lg bg-white p-6 shadow">
+      <h2 className="mb-4 text-xl font-semibold">Health Risk Distribution</h2>
       <table className="min-w-full">
         <thead>
           <tr>

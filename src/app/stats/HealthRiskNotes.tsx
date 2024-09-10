@@ -5,8 +5,8 @@ export default async function HealthRiskNotes() {
   const notesCount = await healthRiskNotesCount();
 
   return (
-    <div className="bg-white shadow rounded-lg p-6 mb-8">
-      <h2 className="text-xl font-semibold mb-4">Top 20 Health Risk Notes</h2>
+    <div className="mb-8 rounded-lg bg-white p-6 shadow">
+      <h2 className="mb-4 text-xl font-semibold">Top 20 Health Risk Notes</h2>
       <table className="min-w-full">
         <thead>
           <tr>
