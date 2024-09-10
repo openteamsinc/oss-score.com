@@ -1,9 +1,8 @@
 import React from "react";
 import duckdb from "duckdb";
+import pMemoize from "p-memoize";
 
 const SCORE_LOCATION = process.env.SCORE_LOCATION || ".";
-
-let DB: duckdb.Database | null = null;
 
 export async function initDB(db: duckdb.Database) {
   console.log(`InitDB - Using score location: ${SCORE_LOCATION}`);
@@ -35,9 +34,11 @@ export async function initDB(db: duckdb.Database) {
 
       (err) => {
         if (err) {
+          console.log(`Error intitializing database: ${err}`);
           rej(err);
           return;
         }
+        console.log(`Initialized database`);
         res(undefined);
       },
     );
@@ -45,12 +46,9 @@ export async function initDB(db: duckdb.Database) {
 }
 
 export async function getDB(): Promise<duckdb.Database> {
-  if (DB != null) {
-    return DB;
-  }
   console.log("Creating new DB");
   return new Promise((res, rej) => {
-    DB = new duckdb.Database(
+    const db = new duckdb.Database(
       ":memory:",
       {
         access_mode: "READ_WRITE",
@@ -59,12 +57,13 @@ export async function getDB(): Promise<duckdb.Database> {
       },
       (err) => {
         if (err) {
+          console.log(`Error creating in-memory database: ${err}`);
           rej(err);
           return;
         }
-        initDB(DB as duckdb.Database)
+        initDB(db as duckdb.Database)
           .then(() => {
-            res(DB as duckdb.Database);
+            res(db as duckdb.Database);
           })
           .catch(rej);
       },
@@ -72,12 +71,19 @@ export async function getDB(): Promise<duckdb.Database> {
   });
 }
 
+export const cachedDB = pMemoize(async () => {
+  console.log("Cached DB");
+  const db = await getDB();
+  return db;
+});
+
 export async function fetchAll<T>(
   sql: string,
   ...args: unknown[]
 ): Promise<T[]> {
-  const db = await getDB();
+  const db = await cachedDB();
   return new Promise((res, rej) => {
+    console.log(`Executing duckdb query`);
     db.all(sql, ...args, (err, data) => {
       if (err) {
         rej(err);
