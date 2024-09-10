@@ -6,6 +6,7 @@ const SCORE_LOCATION = process.env.SCORE_LOCATION || ".";
 let DB: duckdb.Database | null = null;
 
 export async function initDB(db: duckdb.Database) {
+  console.log(`InitDB - Using score location: ${SCORE_LOCATION}`);
   return new Promise((res, rej) => {
     db.run(
       `
@@ -47,6 +48,7 @@ export async function getDB(): Promise<duckdb.Database> {
   if (DB != null) {
     return DB;
   }
+  console.log("Creating new DB");
   return new Promise((res, rej) => {
     DB = new duckdb.Database(
       ":memory:",
