@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node build/db.js",
+    "prebuild": "node scripts/db.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
