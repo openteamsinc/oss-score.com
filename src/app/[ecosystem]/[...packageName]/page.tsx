@@ -22,7 +22,6 @@ export default async function Package({
   params: { ecosystem, packageName },
 }: Props) {
   const pkgName = packageName.join("/");
-  console.log("pkgName", { packageName, pkgName });
   const notes = await cachedNotes();
   const data = await fetchOne<Score>(
     `
