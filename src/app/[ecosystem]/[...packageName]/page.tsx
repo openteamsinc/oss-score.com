@@ -18,13 +18,11 @@ type Props = {
   };
 };
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 export default async function Package({
   params: { ecosystem, packageName },
 }: Props) {
   const pkgName = packageName.join("/");
+  console.log("pkgName", { packageName, pkgName });
   const notes = await cachedNotes();
   const data = await fetchOne<Score>(
     `
@@ -65,7 +63,7 @@ export default async function Package({
   return (
     <article className="container m-auto">
       <h1 className="my-10 text-2xl font-bold">
-        {ecosystem}/{packageName}
+        {ecosystem}/{pkgName}
       </h1>
       <div className="grid grid-cols-2 gap-4">
         <div>
