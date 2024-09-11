@@ -4,7 +4,7 @@ const nextConfig = {
   serverExternalPackages: ["duckdb"],
   experimental: {
     outputFileTracingIncludes: {
-      "/*+": "public",
+      "/**": ["./public/**"],
     },
   },
 };
