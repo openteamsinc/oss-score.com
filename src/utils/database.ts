@@ -1,11 +1,10 @@
 import React from "react";
 import duckdb from "duckdb";
-import getConfig from "next/config";
+
 import path from "path";
 
-const PROJECT_ROOT = getConfig().serverRuntimeConfig.PROJECT_ROOT;
-const dbPath = path.join(PROJECT_ROOT, "public/scores.duckdb");
-console.log("Creating new DB", { PROJECT_ROOT, dbPath });
+const dbPath = path.join(process.cwd(), "public/scores.duckdb");
+console.log("Creating new DB", { dbPath });
 
 const db = new duckdb.Database(
   dbPath,
