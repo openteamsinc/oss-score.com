@@ -10,7 +10,6 @@ const debouncedFetchPackages = debounce(
     } else {
       setPackages([]);
     }
-    console.log("not loading");
     setLoading(false);
   },
   300,
@@ -21,7 +20,6 @@ export default function useSearchPackages(query: string) {
   const [loading, setLoading] = React.useState<boolean>(false);
 
   React.useEffect(() => {
-    console.log("loading");
     setLoading(true);
     debouncedFetchPackages(query, setPackages, setLoading);
     return () => {

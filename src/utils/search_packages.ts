@@ -12,38 +12,22 @@ export type PackageResult = {
 
 export default async function search_packages(query: string) {
   const sqlQuery = `
-select distinct
+SELECT DISTINCT
     packages.ecosystem,
     packages.name,
-    scores.health_risk.value as health_risk,
-    scores.maturity.value as maturity,
-from packages
-left join scores on packages.source_url = scores.source_url
-where true
-and (
-  lower(name) like lower(?::VARCHAR || '%')
-  or lower(name) like lower('%' || ?::VARCHAR || '%')
-)
-
-order by 
-  case 
-    when scores.health_risk.value = 'Healthy' then 0
-    when lower(name) = lower(?::VARCHAR) then 1
-    when lower(name) like lower(?::VARCHAR || '%') then 2
-    else 3
-  end,
-  name
-limit 10
-`;
+    scores.health_risk.value AS health_risk,
+    scores.maturity.value AS maturity,
+    damerau_levenshtein(lower(name), lower(?::VARCHAR))::int AS name_distance
+FROM packages
+LEFT JOIN scores ON packages.source_url = scores.source_url
+ORDER BY
+    name_distance,
+    name
+LIMIT 10`;
 
   try {
-    const results = await fetchAll<PackageResult>(
-      sqlQuery,
-      query,
-      query,
-      query,
-      query,
-    );
+    const results = await fetchAll<PackageResult>(sqlQuery, query);
+    console.log("results", results);
     return results;
   } catch (error) {
     console.error("Error querying packages:", error);
