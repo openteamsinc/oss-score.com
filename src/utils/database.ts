@@ -1,6 +1,5 @@
 import React from "react";
 import duckdb from "duckdb";
-import pMemoize from "p-memoize";
 import getConfig from "next/config";
 import path from "path";
 
