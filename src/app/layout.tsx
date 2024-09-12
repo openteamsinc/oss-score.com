@@ -14,9 +14,11 @@ export const metadata: Metadata = {
 
 function Header() {
   return (
-    <header className="bg-blue-600 p-4 text-white">
+    <header className="bg-[#0A165D] p-4 text-white">
       <div className="container mx-auto flex items-center justify-between">
-        <h1 className="text-2xl font-bold">OpenTeams • Open Source Scoring</h1>
+        <Link href="/">
+          <img src="/logo.svg" className="h-8" />
+        </Link>
         <nav>
           <ul className="flex space-x-4">
             <li className="flex items-center">
