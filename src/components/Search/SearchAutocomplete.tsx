@@ -28,9 +28,9 @@ export default function SearchAutocomplete() {
         }}
       >
         <div className="relative mt-1">
-          <div className="focus-visible:ring-opacity/75 rounded-lg relative w-full cursor-default overflow-hidden  bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
+          <div className="focus-visible:ring-opacity/75 relative w-full cursor-default overflow-hidden rounded-lg  bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
             <ComboboxInput
-              className="w-full border-none rounded-lg p-2 pl-3 pr-10 text-xl leading-10 text-gray-900 focus:ring-0"
+              className="w-full rounded-lg border-none p-2 pl-3 pr-10 text-xl leading-10 text-gray-900 focus:ring-0"
               autoComplete="off"
               onChange={(event) => setQuery(event.target.value)}
               displayValue={(item: PackageResult | null) =>

@@ -1,6 +1,4 @@
-import { fetchOne } from "@/utils/database";
 import packageScore from "@/utils/packageScore";
-import { Score } from "@/utils/score";
 import { NextRequest } from "next/server";
 
 type Props = {
