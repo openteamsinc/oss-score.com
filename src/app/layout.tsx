@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
-import Icon from "@mdi/react";
+import Icon from '@mdi/react';
 import { mdiGithub } from "@mdi/js";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -14,11 +14,9 @@ export const metadata: Metadata = {
 
 function Header() {
   return (
-    <header className="bg-[#0A165D] p-4 text-white">
+    <header className="bg-blue-600 p-4 text-white">
       <div className="container mx-auto flex items-center justify-between">
-        <Link href="/">
-          <img src="/logo.svg" className="h-8" />
-        </Link>
+        <h1 className="text-2xl font-bold">OpenTeams • Open Source Scoring</h1>
         <nav>
           <ul className="flex space-x-4">
             <li className="flex items-center">
