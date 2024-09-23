@@ -1,5 +1,8 @@
 import React from "react";
 import SearchAutocomplete from "@/components/Search/SearchAutocomplete";
+import { Card, CardContent } from "@/components/ui/card";
+import { ArrowRight, Book, Github } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -19,6 +22,42 @@ export default function Home() {
           a dependency enhance the stability and maintainability of our
           applications while minimizing potential risks and challenges?
         </p>
+      </div>
+      <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <Card className="flex flex-col items-center p-6 transition-all hover:shadow-lg">
+          <Book className="mb-4 size-12 text-blue-500" />
+          <CardContent className="text-center">
+            <h2 className="mb-2 text-xl font-semibold">API Documentation</h2>
+            <p className="mb-4 text-gray-600">
+              Explore our comprehensive API to integrate OpenTeams scoring into
+              your workflow.
+            </p>
+            <Link
+              href="/docs"
+              className="inline-flex items-center text-blue-500 hover:underline"
+            >
+              View API Documentation
+              <ArrowRight className="ml-2 size-4" />
+            </Link>
+          </CardContent>
+        </Card>
+        <Card className="flex flex-col items-center p-6 transition-all hover:shadow-lg">
+          <Github className="mb-4 size-12 text-green-500" />
+          <CardContent className="text-center">
+            <h2 className="mb-2 text-xl font-semibold">GitHub Action</h2>
+            <p className="mb-4 text-gray-600">
+              Automatically analyze your dependencies&rsquo; health in pull
+              requests.
+            </p>
+            <a
+              href="https://github.com/openteamsinc/actions/"
+              className="inline-flex items-center text-green-500 hover:underline"
+            >
+              Use the GitHub Action
+              <ArrowRight className="ml-2 size-4" />
+            </a>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
