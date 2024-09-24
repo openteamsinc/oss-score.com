@@ -17,7 +17,8 @@ function Header() {
     <header className="bg-[#0A165D] p-4 text-white">
       <div className="container mx-auto flex items-center justify-between">
         <Link href="/">
-          <img src="/logo.svg" className="h-8" />
+          {/* eslint-disable @next/next/no-img-element */}
+          <img src="/logo.svg" className="h-8" alt="openteams logo" />
         </Link>
         <nav>
           <ul className="flex space-x-4">
