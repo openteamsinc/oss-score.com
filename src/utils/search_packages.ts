@@ -19,13 +19,13 @@ export default async function search_packages(query: string) {
     FROM packages
     WHERE lower(packages.name) LIKE lower(?::VARCHAR) || '%'  -- Apply prefix matching to limit results
     ORDER BY name_distance, name
-    LIMIT 10`;  // Return only top 10 results
+    LIMIT 10`; // Return only top 10 results
 
   try {
     const results = await fetchAll<PackageResult>(sqlQuery, query);
     console.log("results", results);
-    return results.map(result => ({
-      ecosystem: result.ecosystem,  // Send only the fields needed for search suggestions
+    return results.map((result) => ({
+      ecosystem: result.ecosystem, // Send only the fields needed for search suggestions
       name: result.name,
     }));
   } catch (error) {

@@ -12,7 +12,7 @@ const debouncedFetchPackages = debounce(
     }
     setLoading(false);
   },
-  150,  // Reduced debounce delay from 300ms to 150ms for more responsiveness
+  150, // Reduced debounce delay from 300ms to 150ms for more responsiveness
 );
 
 const cache = new Map();
@@ -32,11 +32,12 @@ export default function useSearchPackages(query: string) {
     setLoading(true);
     debouncedFetchPackages(
       query,
-      (result: PackageResult[]) => {  // Explicitly type result as PackageResult[]
+      (result: PackageResult[]) => {
+        // Explicitly type result as PackageResult[]
         setPackages(result);
-        cache.set(query, result);  // Cache the result for future queries
+        cache.set(query, result); // Cache the result for future queries
       },
-      setLoading
+      setLoading,
     );
 
     return () => {
