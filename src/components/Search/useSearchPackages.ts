@@ -33,7 +33,6 @@ export default function useSearchPackages(query: string) {
     debouncedFetchPackages(
       query,
       (result: PackageResult[]) => {
-        // Explicitly type result as PackageResult[]
         setPackages(result);
         cache.set(query, result); // Cache the result for future queries
       },
