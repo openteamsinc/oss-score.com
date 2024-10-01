@@ -13,28 +13,22 @@ export type PackageResult = {
 export default async function search_packages(query: string) {
   const sqlQuery = `
   WITH filtered_packages AS (
-    SELECT
-      packages.ecosystem,
-      packages.name,
-      scores.health_risk AS health_risk,  -- Correctly reference health_risk and maturity
-      scores.maturity AS maturity,
-      packages.source_url
+    SELECT 
+      ecosystem,
+      name,
+      source_url,
+      damerau_levenshtein(lower(name), lower(?::VARCHAR))::int AS name_distance
     FROM packages
-    LEFT JOIN scores ON packages.source_url = scores.source_url
-    WHERE lower(packages.name) ILIKE lower(?::VARCHAR) || '%'  -- Prefix matching
-    LIMIT 100  -- Limit rows for Damerau-Levenshtein
+    ORDER BY name_distance
+    LIMIT 10  -- Only keep the top 10 matches based on fuzzy distance
   )
-  SELECT DISTINCT
+  SELECT
     filtered_packages.ecosystem,
     filtered_packages.name,
-    filtered_packages.health_risk,
-    filtered_packages.maturity,
-    damerau_levenshtein(lower(filtered_packages.name), lower(?::VARCHAR))::int AS name_distance
+    scores.health_risk.value AS health_risk,
+    scores.maturity.value AS maturity
   FROM filtered_packages
-  ORDER BY
-    name_distance,
-    filtered_packages.name
-  LIMIT 10`;
+  LEFT JOIN scores ON filtered_packages.source_url = scores.source_url;`;
 
   try {
     const results = await fetchAll<PackageResult>(sqlQuery, query);
