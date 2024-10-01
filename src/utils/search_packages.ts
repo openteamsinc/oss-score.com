@@ -12,17 +12,29 @@ export type PackageResult = {
 
 export default async function search_packages(query: string) {
   const sqlQuery = `
+  WITH filtered_packages AS (
+    SELECT
+      packages.ecosystem,
+      packages.name,
+      scores.health_risk.value AS health_risk,
+      scores.maturity.value AS maturity,
+      packages.source_url
+    FROM packages
+    LEFT JOIN scores ON packages.source_url = scores.source_url
+    WHERE lower(packages.name) ILIKE lower(?::VARCHAR) || '%'  -- Prefix matching
+    LIMIT 100  -- Limit rows for Damerau-Levenshtein
+  )
   SELECT DISTINCT
-    packages.ecosystem,
-    packages.name,
-    scores.health_risk.value AS health_risk,
-    scores.maturity.value AS maturity
-  FROM packages
-  LEFT JOIN scores ON packages.source_url = scores.source_url
-  WHERE lower(packages.name) ILIKE lower(?::VARCHAR) || '%'  -- Prefix matching
+    ecosystem,
+    name,
+    health_risk,
+    maturity,
+    damerau_levenshtein(lower(name), lower(?::VARCHAR))::int AS name_distance
+  FROM filtered_packages
   ORDER BY
-    packages.name
-  LIMIT 10`;
+    name_distance,
+    name
+  LIMIT 10;`;
 
   try {
     const results = await fetchAll<PackageResult>(sqlQuery, query);
