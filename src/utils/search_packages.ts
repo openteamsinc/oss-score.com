@@ -67,11 +67,12 @@ export async function refineWithDamerauLevenshtein(
   }
 }
 
-export async function search_packages(query: string) {
+export default async function search_packages(query: string) {
   const prefixResults = await searchByPrefix(query);
   const refinedResults = await refineWithDamerauLevenshtein(
     prefixResults,
     query,
   );
+
   return refinedResults;
 }
