@@ -19,8 +19,8 @@ export default async function search_packages(query: string) {
     damerau_levenshtein(name, lower(?::VARCHAR))::int AS name_distance
   FROM packages
   ORDER BY
-    name,
-    name_distance
+    name_distance,
+    name
   LIMIT 10
   )
   SELECT
