@@ -10,68 +10,41 @@ export type PackageResult = {
   maturity: MaturityValue;
 };
 
-export async function searchByPrefix(query: string) {
+export default async function search_packages(query: string) {
   const sqlQuery = `
-  SELECT DISTINCT
-    packages.ecosystem,
-    packages.name,
-    scores.health_risk.value AS health_risk,
-    scores.maturity.value AS maturity
-  FROM packages
-  LEFT JOIN scores ON packages.source_url = scores.source_url
-  WHERE lower(packages.name) ILIKE lower(?::VARCHAR) || '%'  -- Prefix matching
-  ORDER BY
-    packages.name
-  LIMIT 100`;
-
-  try {
-    const results = await fetchAll<PackageResult>(sqlQuery, query);
-    console.log("Prefix matching results", results);
-    return results; // Return the filtered results
-  } catch (error) {
-    console.error("Error querying packages by prefix:", error);
-    return [];
-  }
-}
-
-export async function refineWithDamerauLevenshtein(
-  filteredResults: PackageResult[],
-  query: string,
-) {
-  if (filteredResults.length === 0) {
-    return []; // No need to run Damerau-Levenshtein if no prefix matches
-  }
-
-  const sqlQuery = `
+  WITH filtered_packages AS (
+    SELECT
+      packages.ecosystem,
+      packages.name,
+      scores.health_risk.value AS health_risk,
+      scores.maturity.value AS maturity,
+      packages.source_url
+    FROM packages
+    LEFT JOIN scores ON packages.source_url = scores.source_url
+    WHERE lower(packages.name) ILIKE lower(?::VARCHAR) || '%'  -- Prefix matching
+    LIMIT 100  -- Limit rows for Damerau-Levenshtein
+  )
   SELECT DISTINCT
     ecosystem,
     name,
     health_risk,
     maturity,
     damerau_levenshtein(lower(name), lower(?::VARCHAR))::int AS name_distance
-  FROM (
-    SELECT * FROM packages WHERE name IN (${filteredResults.map((pkg) => `'${pkg.name}'`).join(", ")})  -- Filter by prefix results
-  ) AS filtered_packages
+  FROM filtered_packages
   ORDER BY
     name_distance,
     name
-  LIMIT 10`;
+  LIMIT 10;`;
 
   try {
     const results = await fetchAll<PackageResult>(sqlQuery, query);
-    console.log("Damerau-Levenshtein results", results);
-    return results; // Return refined results
+    console.log("results", results);
+    return results.map((result) => ({
+      ecosystem: result.ecosystem, // Send only the fields needed for search suggestions
+      name: result.name,
+    }));
   } catch (error) {
-    console.error("Error querying packages with Damerau-Levenshtein:", error);
+    console.error("Error querying packages:", error);
     return [];
   }
-}
-
-export async function search_packages(query: string) {
-  const prefixResults = await searchByPrefix(query);
-  const refinedResults = await refineWithDamerauLevenshtein(
-    prefixResults,
-    query,
-  );
-  return refinedResults;
 }
