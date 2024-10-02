@@ -10,44 +10,35 @@ export type PackageResult = {
   maturity: MaturityValue;
 };
 
-export default async function search_packages(
-  query: string,
-  signal?: AbortSignal,
-) {
+export default async function search_packages(query: string) {
   const sqlQuery = `
-    SELECT DISTINCT
-      packages.ecosystem,
-      packages.name,
-      scores.health_risk.value AS health_risk,
-      scores.maturity.value AS maturity,
+  WITH filtered_packages AS (
+    SELECT 
+      ecosystem,
+      name,
+      source_url,
       damerau_levenshtein(lower(name), lower(?::VARCHAR))::int AS name_distance
     FROM packages
-    LEFT JOIN scores ON packages.source_url = scores.source_url
-    ORDER BY
-      name_distance,
-      name
-    LIMIT 10;
-  `;
+    ORDER BY name_distance
+    LIMIT 10  -- Only keep the top 10 matches based on fuzzy distance
+  )
+  SELECT
+    filtered_packages.ecosystem,
+    filtered_packages.name,
+    scores.health_risk.value AS health_risk,
+    scores.maturity.value AS maturity
+  FROM filtered_packages
+  LEFT JOIN scores ON filtered_packages.source_url = scores.source_url;`;
 
   try {
-    // Pass the signal only if it's provided
-    const options = signal ? { signal } : {};
-    const results = await fetchAll<PackageResult>(sqlQuery, query, options);
-
+    const results = await fetchAll<PackageResult>(sqlQuery, query);
+    console.log("results", results);
     return results.map((result) => ({
-      ecosystem: result.ecosystem,
+      ecosystem: result.ecosystem, // Send only the fields needed for search suggestions
       name: result.name,
     }));
   } catch (error) {
-    // Type check before accessing error properties
-    if (error instanceof Error && error.name === "AbortError") {
-      console.log("Request was aborted");
-    } else if (error instanceof Error) {
-      console.error("Error fetching packages:", error.message);
-      throw error; // Re-throw if not an abort error
-    } else {
-      console.error("Unknown error occurred:", error);
-      throw error; // Re-throw if the error is not an instance of Error
-    }
+    console.error("Error querying packages:", error);
+    return [];
   }
 }
