@@ -21,7 +21,7 @@ export default async function search_packages(query: string) {
   FROM packages
   LEFT JOIN scores ON packages.source_url = scores.source_url
   ORDER BY
-      name_distance,
+      name_distance
   LIMIT 10`;
 
   try {
