@@ -21,7 +21,7 @@ if (!db) {
       } else {
         console.log("Database opened in READ_WRITE mode successfully.");
       }
-    }
+    },
   );
 } else {
   console.log("Database is already connected in READ_WRITE mode.");
