@@ -6,20 +6,26 @@ import path from "path";
 const dbPath = path.join(process.cwd(), "public/scores.duckdb");
 console.log("Creating new DB", { dbPath });
 
-const db = new duckdb.Database(
-  dbPath,
-  {
-    access_mode: "READ_ONLY",
-    max_memory: "512MB",
-    threads: "4",
-  },
-  (err) => {
-    if (err) {
-      console.log(`Error creating in-memory database: ${err}`);
-      return;
+let db: duckdb.Database | null = null;
+if (!db) {
+  db = new duckdb.Database(
+    dbPath,
+    {
+      access_mode: "READ_WRITE", // Open in READ_WRITE mode
+      max_memory: "512MB",
+      threads: "1",
+    },
+    (err) => {
+      if (err) {
+        console.log(`Error opening database in READ_WRITE mode: ${err}`);
+      } else {
+        console.log("Database opened in READ_WRITE mode successfully.");
+      }
     }
-  },
-);
+  );
+} else {
+  console.log("Database is already connected in READ_WRITE mode.");
+}
 
 // export async function getDB(): Promise<duckdb.Database> {
 //   const PROJECT_ROOT = getConfig().serverRuntimeConfig.PROJECT_ROOT;
@@ -55,7 +61,7 @@ export async function fetchAll<T>(
 ): Promise<T[]> {
   return new Promise((res, rej) => {
     console.log(`Executing duckdb query`);
-    db.all(sql, ...args, (err, data) => {
+    db!.all(sql, ...args, (err, data) => {
       if (err) {
         rej(err);
         return;
