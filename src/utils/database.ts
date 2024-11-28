@@ -54,7 +54,6 @@ export async function fetchAll<T>(
   ...args: unknown[]
 ): Promise<T[]> {
   return new Promise((res, rej) => {
-    console.log(`Executing duckdb query`);
     db.all(sql, ...args, (err, data) => {
       if (err) {
         rej(err);
