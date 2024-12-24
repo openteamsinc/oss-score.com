@@ -64,10 +64,11 @@ export async function POST(
     reqs.map(async ({ name }) => {
       const { pkg, source } = await packageScore(ecosystem, name);
       if (pkg && source) {
-        // @ts-expect-error Dont care about packages
-        delete source?.packages;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { packages: _, ...sourceWithoutPackages } = source;
+
         replaceNoteIdWithTextCode(pkg, notes);
-        replaceNoteIdWithTextCode(source, notes);
+        replaceNoteIdWithTextCode(sourceWithoutPackages, notes);
         packages[name] = { source, pkg };
       }
     }),
