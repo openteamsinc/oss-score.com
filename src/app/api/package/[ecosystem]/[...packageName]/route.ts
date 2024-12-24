@@ -3,10 +3,10 @@ import packageScore from "@/utils/packageScore";
 import { NextRequest } from "next/server";
 
 type Props = {
-  params: {
+  params: Promise<{
     ecosystem: string;
     packageName: string[];
-  };
+  }>;
 };
 
 type T = {
@@ -26,10 +26,8 @@ function replaceNoteIdWithTextCode(val: T, notes: Notes) {
   }
 }
 
-export async function GET(
-  request: NextRequest,
-  { params: { ecosystem, packageName } }: Props,
-) {
+export async function GET(request: NextRequest, { params }: Props) {
+  const { ecosystem, packageName } = await params;
   const name = packageName.join("/");
   const { pkg, source } = await packageScore(ecosystem, name);
   const notes = await cachedNotes();

@@ -4,15 +4,14 @@ import PackageScore from "./Score";
 import LoadingScore from "./LoadingScore";
 
 type Props = {
-  params: {
+  params: Promise<{
     ecosystem: string;
     packageName: string[];
-  };
+  }>;
 };
 
-export default async function Package({
-  params: { ecosystem, packageName },
-}: Props) {
+export default async function Package({ params }: Props) {
+  const { ecosystem, packageName } = await params;
   const name = packageName.join("/");
   return (
     <article className="container m-auto">

@@ -4,9 +4,9 @@ import { Package, Score } from "@/utils/score";
 import { NextRequest } from "next/server";
 
 type Props = {
-  params: {
+  params: Promise<{
     ecosystem: string;
-  };
+  }>;
 };
 
 type T = {
@@ -50,10 +50,8 @@ function parsePythonRequirements(requirements: string): Requirement[] {
     });
 }
 
-export async function POST(
-  request: NextRequest,
-  { params: { ecosystem } }: Props,
-) {
+export async function POST(request: NextRequest, { params }: Props) {
+  const { ecosystem } = await params;
   const notes = await cachedNotes();
   const text = await request.text();
   const reqs = parsePythonRequirements(text);
@@ -64,10 +62,11 @@ export async function POST(
     reqs.map(async ({ name }) => {
       const { pkg, source } = await packageScore(ecosystem, name);
       if (pkg && source) {
-        // @ts-expect-error Dont care about packages
-        delete source?.packages;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { packages: _, ...sourceWithoutPackages } = source;
+
         replaceNoteIdWithTextCode(pkg, notes);
-        replaceNoteIdWithTextCode(source, notes);
+        replaceNoteIdWithTextCode(sourceWithoutPackages, notes);
         packages[name] = { source, pkg };
       }
     }),
