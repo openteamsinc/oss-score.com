@@ -4,9 +4,9 @@ import { Package, Score } from "@/utils/score";
 import { NextRequest } from "next/server";
 
 type Props = {
-  params: {
+  params: Promise<{
     ecosystem: string;
-  };
+  }>;
 };
 
 type T = {
@@ -50,10 +50,8 @@ function parsePythonRequirements(requirements: string): Requirement[] {
     });
 }
 
-export async function POST(
-  request: NextRequest,
-  { params: { ecosystem } }: Props,
-) {
+export async function POST(request: NextRequest, { params }: Props) {
+  const { ecosystem } = await params;
   const notes = await cachedNotes();
   const text = await request.text();
   const reqs = parsePythonRequirements(text);

@@ -2,13 +2,8 @@
 import createMDX from "@next/mdx";
 
 const nextConfig = {
-  serverExternalPackages: ["duckdb"],
+  serverExternalPackages: ["duckdb", "duckdb-async"],
   pageExtensions: ["mdx", "tsx", "ts"],
-  experimental: {
-    outputFileTracingIncludes: {
-      "/**": ["./public/**"],
-    },
-  },
 };
 
 const withMDX = createMDX({
