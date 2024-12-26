@@ -1,4 +1,4 @@
-import { Score } from "@/utils/score";
+import { Score } from "@/utils/score_res";
 import PACKAGE_NAME_MISMATCH from "./PACKAGE_NAME_MISMATCH";
 import Generic from "./Generic";
 import REPO_NOT_FOUND from "./REPO_NOT_FOUND";

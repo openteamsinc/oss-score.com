@@ -1,4 +1,4 @@
-import { Score } from "@/utils/score";
+import { Score } from "@/utils/score_res";
 import TimeStat from "./TimeStat";
 import SourceCodeLink from "./SourceCodeLink";
 
