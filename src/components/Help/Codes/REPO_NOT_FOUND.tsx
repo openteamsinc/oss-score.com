@@ -1,5 +1,5 @@
 import SourceCodeLink from "@/components/SourceCodeLink";
-import { Score } from "@/utils/score";
+import { Score } from "@/utils/score_res";
 
 type Props = {
   ecosystem: string;

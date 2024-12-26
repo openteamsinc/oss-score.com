@@ -2,7 +2,7 @@ import { formatDistanceToNow } from "date-fns";
 
 type Props = {
   title: string;
-  time?: Date | null;
+  time?: string | Date | null;
 };
 export default function TimeStat({ title, time }: Props) {
   return (

@@ -1,5 +1,5 @@
 import SorceCodeLink from "@/components/SourceCodeLink";
-import { Score } from "@/utils/score";
+import { Score } from "@/utils/score_res";
 import HowToFix from "./HowtoFix";
 import Header from "./Header";
 

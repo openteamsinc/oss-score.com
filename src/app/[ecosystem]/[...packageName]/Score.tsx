@@ -10,17 +10,38 @@ import Maturity from "@/components/Maturity";
 import OtherStats from "@/components/OtherStats";
 import RiskHelp from "@/components/Help/Risk";
 import PackageStats from "@/components/Stats/PackageStats";
-import packageScore from "@/utils/packageScore";
+// import packageScore from "@/utils/packageScore";
+import { PackageScore } from "@/utils/score_res";
 
 type Props = {
   ecosystem: string;
   name: string;
 };
 
-export default async function PackageScore({ ecosystem, name }: Props) {
+async function packageScoreReq(
+  ecosystem: string,
+  name: string,
+): Promise<PackageScore> {
+  const BASE_URL = "https://score-845372508455.us-west1.run.app";
+  const url = `${BASE_URL}/score/${ecosystem.toLowerCase()}/${name}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  console.log(data);
+  return data;
+}
+
+export default async function PackageScoreComponent({
+  ecosystem,
+  name,
+}: Props) {
   const notes = await cachedNotes();
-  const { source, pkg } = await packageScore(ecosystem, name);
-  if (pkg == null || source == null) {
+  const {
+    package: pkg,
+    status,
+    score,
+  } = await packageScoreReq(ecosystem, name);
+
+  if (status === "not_found") {
     notFound();
   }
 
@@ -29,10 +50,10 @@ export default async function PackageScore({ ecosystem, name }: Props) {
       <div>
         <section className="mb-2">
           <h2 className="m-2 flex items-center border-b border-b-slate-300 text-lg">
-            Health & Risk: <Risk value={source.health_risk.value} />
+            Health & Risk: <Risk value={score.health_risk.value} />
           </h2>
           <ul className="w-full list-inside space-y-2 text-sm text-slate-500">
-            {source.health_risk.notes
+            {score.health_risk.notes
               .filter((n) => n != null)
               .map((noteId, index) => (
                 <li key={index} className="mb-2 flex items-start">
@@ -48,7 +69,7 @@ export default async function PackageScore({ ecosystem, name }: Props) {
                     note={notes[noteId]}
                     ecosystem={ecosystem}
                     packageName={name}
-                    score={source}
+                    score={score}
                   />
                 </li>
               ))}
@@ -56,10 +77,10 @@ export default async function PackageScore({ ecosystem, name }: Props) {
         </section>
         <section className="mb-2">
           <h2 className="m-2 flex items-center border-b border-b-slate-300 text-lg">
-            Maturity: <Maturity value={source.maturity.value} />
+            Maturity: <Maturity value={score.maturity.value} />
           </h2>
           <ul className="w-full list-inside space-y-2 text-sm text-slate-500">
-            {source.maturity.notes.map((noteId, index) => (
+            {score.maturity.notes.map((noteId, index) => (
               <li key={index} className="mb-2 flex items-start">
                 <span className="h-5 px-2">
                   <Icon path={mdiCircleSmall} size={0.5} />
@@ -86,9 +107,9 @@ export default async function PackageScore({ ecosystem, name }: Props) {
       </div>
       <div>
         <h2 className="border-b border-b-slate-300">Package Stats</h2>
-        <PackageStats score={source} pkg={pkg} />
+        <PackageStats score={score} pkg={pkg} ecosystem={ecosystem} />
         <h2 className="border-b border-b-slate-300">Source Stats</h2>
-        <OtherStats score={source} />
+        <OtherStats score={score} />
       </div>
     </div>
   );

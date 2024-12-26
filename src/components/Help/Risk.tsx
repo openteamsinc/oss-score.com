@@ -6,8 +6,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { NoteRow } from "@/utils/database";
-import { Score } from "@/utils/score";
+
 import HelpContent from "./Codes";
+import { Score } from "@/utils/score_res";
 
 type Props = {
   note: NoteRow;
