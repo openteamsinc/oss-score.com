@@ -93,3 +93,30 @@ export type PackageScore =
       source: Source;
       score: Score;
     };
+
+const BASE_URL =
+  process.env.SCORE_URL || "https://score-845372508455.us-west1.run.app";
+
+export async function fetchPackageScore(
+  ecosystem: string,
+  name: string,
+): Promise<PackageScore> {
+  const url = `${BASE_URL}/score/${ecosystem.toLowerCase()}/${name}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  return data;
+}
+
+export type Notes = {
+  [key: string]: { code: string; note: string; id: number };
+};
+
+export async function fetchNotes(): Promise<Notes> {
+  const url = `${BASE_URL}/notes`;
+  const res = await fetch(url);
+  const data: Notes = await res.json();
+  const notes = Object.fromEntries(
+    Object.entries(data).map(([, value]) => [value.code, value]),
+  );
+  return notes;
+}
