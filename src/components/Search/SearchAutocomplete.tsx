@@ -17,9 +17,12 @@ import { SiPypi, SiAnaconda, SiNpm } from "react-icons/si";
 
 export default function SearchAutocomplete() {
   const [query, setQuery] = React.useState("");
-  const { packages, loading } = useSearchPackages(query);
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedSource, setSelectedSource] = useState("Source");
+  const { packages, loading } = useSearchPackages(
+    query,
+    selectedSource === "Source" ? "" : selectedSource,
+  );
   const router = useRouter();
 
   const handleSourceSelect = (source: string) => {
