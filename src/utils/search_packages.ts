@@ -10,7 +10,10 @@ export type PackageResult = {
   maturity: MaturityValue;
 };
 
-export default async function search_packages(query: string, ecosystem: string) {
+export default async function search_packages(
+  query: string,
+  ecosystem: string,
+) {
   const sqlQuery = `
 SELECT DISTINCT
     packages.ecosystem,
@@ -26,7 +29,10 @@ ORDER BY
 LIMIT 10`;
 
   try {
-    const results = await fetchAll<PackageResult>(sqlQuery, [ecosystem, `%${query}%`]);
+    const results = await fetchAll<PackageResult>(sqlQuery, [
+      ecosystem,
+      `%${query}%`,
+    ]);
     console.log("results", results);
     return results;
   } catch (error) {
