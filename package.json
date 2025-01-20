@@ -24,6 +24,7 @@
     "@radix-ui/react-popover": "^1.1.1",
     "@types/mdx": "^2.0.13",
     "@typescript-eslint/eslint-plugin": "^7.16.1",
+    "axios": "^1.7.9",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",

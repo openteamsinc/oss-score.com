@@ -1,43 +1,47 @@
 "use server";
 
-import { fetchAll } from "./database";
-import { HealthRiskValue, MaturityValue } from "./score";
+import searchPyPIPackages from "./search_pypi";
+import searchCondaForgePackages from "./search_conda";
+import searchNpmPackages from "./search_npm";
 
 export type PackageResult = {
   ecosystem: string;
   name: string;
-  health_risk: HealthRiskValue;
-  maturity: MaturityValue;
+  version: string;
+  url: string;
 };
 
 export default async function search_packages(
   query: string,
   ecosystem: string,
-) {
-  const sqlQuery = `
-SELECT DISTINCT
-    packages.ecosystem,
-    packages.name,
-    scores.health_risk.value AS health_risk,
-    scores.maturity.value AS maturity,
-    damerau_levenshtein(lower(name), lower(?::VARCHAR))::int AS name_distance
-FROM packages
-LEFT JOIN scores ON packages.source_url = scores.source_url
-ORDER BY
-    name_distance,
-    name
-LIMIT 10`;
+): Promise<PackageResult[]> {
+  let results: PackageResult[] = [];
 
-  try {
-    const results = await fetchAll<PackageResult>(sqlQuery, [
-      ecosystem,
-      `%${query}%`,
-    ]);
-    console.log("results", results);
-    return results;
-  } catch (error) {
-    console.error("Error querying packages:", error);
-    // throw error;
-    return [];
+  if (ecosystem === "pypi") {
+    const pypiResults = await searchPyPIPackages(query);
+    results = pypiResults.map((pkg) => ({
+      ecosystem: "pypi",
+      name: pkg.name,
+      version: pkg.version,
+      url: pkg.package_manager_url,
+    }));
+  } else if (ecosystem === "conda") {
+    const condaResults = await searchCondaForgePackages(query);
+    results = condaResults.map((pkg) => ({
+      ecosystem: "conda-forge",
+      name: pkg.name,
+      version: pkg.latestVersion,
+      url: pkg.url,
+    }));
+  } else if (ecosystem === "npm") {
+    const npmResults = await searchNpmPackages(query);
+    results = npmResults.map((pkg) => ({
+      ecosystem: "npm",
+      name: pkg.name,
+      version: pkg.version,
+      url: pkg.apiUrl,
+    }));
   }
+
+  return results;
 }
