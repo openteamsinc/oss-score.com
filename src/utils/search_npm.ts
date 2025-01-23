@@ -17,20 +17,25 @@ export default async function searchNpmPackages(
   const searchUrl = `https://registry.npmjs.org/-/v1/search`;
 
   try {
-    const data = await fetch(`${searchUrl}?text=${encodeURIComponent(query)}&size=10`, {
-      method: "GET",
-    }).then((response) => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      });
+    const data = await fetch(
+      `${searchUrl}?text=${encodeURIComponent(query)}&size=10`,
+      {
+        method: "GET",
+      },
+    ).then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    });
 
-    const results: NpmPackageResult[] = data.objects.map((pkg: NpmApiPackage) => ({
+    const results: NpmPackageResult[] = data.objects.map(
+      (pkg: NpmApiPackage) => ({
         name: pkg.package.name,
         version: pkg.package.version,
         apiUrl: `https://registry.npmjs.org/${pkg.package.name}`,
-    }));
+      }),
+    );
 
     return results;
   } catch (error) {

@@ -81,8 +81,7 @@ export default function SearchAutocomplete() {
                   className="flex cursor-pointer items-center px-4 py-2 hover:bg-gray-100"
                   onClick={() => handleSourceSelect("pypi")}
                 >
-                  <SiPypi className="mr-2 text-blue-500" />{" "}
-                  pypi
+                  <SiPypi className="mr-2 text-blue-500" /> pypi
                 </li>
                 <li
                   className="flex cursor-pointer items-center px-4 py-2 hover:bg-gray-100"
@@ -95,8 +94,7 @@ export default function SearchAutocomplete() {
                   className="flex cursor-pointer items-center px-4 py-2 hover:bg-gray-100"
                   onClick={() => handleSourceSelect("npm")}
                 >
-                  <SiNpm className="mr-2" style={{ color: "#C23B33" }} />{" "}
-                  npm
+                  <SiNpm className="mr-2" style={{ color: "#C23B33" }} /> npm
                 </li>
               </ul>
             </div>

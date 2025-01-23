@@ -7,7 +7,6 @@ import searchNpmPackages from "./search_npm";
 export type PackageResult = {
   ecosystem: string;
   name: string;
-  version: string;
   url: string;
 };
 
@@ -22,7 +21,6 @@ export default async function search_packages(
     results = pypiResults.map((pkg) => ({
       ecosystem: "pypi",
       name: pkg.name,
-      version: pkg.version,
       url: pkg.package_manager_url,
     }));
   } else if (ecosystem === "conda") {
