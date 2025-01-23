@@ -1,43 +1,67 @@
-import axios from "axios";
+interface PyPIPackageResult {
+    name: string;
+    package_manager_url: string;
+}
 
-export type PyPIPackageResult = {
-  name: string;
-  version: string;
-  latest_release_number: string;
-  package_manager_url: string;
-};
+let cachedData: { projects: { name: string }[] } = { projects: [] };
 
-type PyPiApiProject = {
-  name: string;
-  latest_release_number?: string; // Optional because it might be undefined
-};
+async function fetchPyPIProjects(): Promise<{ projects: { name: string }[] }> {
+    if (cachedData.projects.length > 0) {
+        return cachedData;
+    }
 
-export default async function searchPyPIPackages(
-  query: string,
-): Promise<PyPIPackageResult[]> {
-  const apiUrl = `https://libraries.io/api/search`;
-
-  try {
-    const response = await axios.get(apiUrl, {
-      params: {
-        q: query,
-        platforms: "pypi",
-        api_key: process.env.LIBRARIES_IO_API_KEY,
-      },
+    const response = await fetch("https://pypi.org/simple/", {
+        headers: { Accept: "application/vnd.pypi.simple.v1+json" },
     });
 
-    const results: PyPIPackageResult[] = response.data
-      .slice(0, 10)
-      .map((project: PyPiApiProject) => ({
-        name: project.name,
-        version: project.latest_release_number || "Unknown",
-        latest_release_number: project.latest_release_number || "Unknown",
-        package_manager_url: `https://pypi.org/project/${project.name}/`,
-      }));
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
-    return results;
-  } catch (error) {
-    console.error("Error fetching data from Libraries.io:", error);
-    return [];
-  }
+    cachedData = await response.json();
+    return cachedData;
+}
+
+function calculateRelevanceScore(query: string, packageName: string): number {
+    const normalizedQuery = query.toLowerCase();
+    const normalizedPackageName = packageName.toLowerCase();
+
+    if (normalizedQuery === normalizedPackageName) {
+        return 1;
+    } else if (normalizedPackageName.startsWith(normalizedQuery)) {
+        return 0.9;
+    } else if (normalizedPackageName.includes(normalizedQuery)) {
+        const position = normalizedPackageName.indexOf(normalizedQuery);
+        return 0.7 - position * 0.01;
+    }
+
+    const lengthPenalty = Math.abs(normalizedPackageName.length - normalizedQuery.length) * 0.01;
+    return Math.max(0, 0.5 - lengthPenalty);
+}
+
+export default async function searchPyPIPackages(query: string): Promise<PyPIPackageResult[]> {
+    try {
+        const data = await fetchPyPIProjects();
+
+        const filteredResults = data.projects.filter((pkg: { name: string }) =>
+            pkg.name.toLowerCase().includes(query.toLowerCase())
+        );
+
+        const results: PyPIPackageResult[] = filteredResults
+            .sort((a: { name: string }, b: { name: string }) => {
+                const scoreA = calculateRelevanceScore(query, a.name);
+                const scoreB = calculateRelevanceScore(query, b.name);
+                return scoreB - scoreA || a.name.localeCompare(b.name);
+            })
+            .slice(0, 10)
+            .map((pkg: { name: string }) => ({
+                name: pkg.name,
+                package_manager_url: `https://pypi.org/project/${pkg.name}/`,
+            }));
+
+        return results;
+    } catch (error) {
+        console.error("Error fetching PyPI packages:", error);
+        return [];
+    }
 }

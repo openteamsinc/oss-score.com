@@ -42,7 +42,6 @@ export default function SearchAutocomplete() {
       >
         <div className="relative mt-1 flex justify-center">
           <div className="flex w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none sm:text-sm">
-            {/* Dropdown Button */}
             <div>
               <button
                 className="flex h-full w-32 items-center justify-center rounded-l-lg bg-blue-500 px-4 text-sm font-medium text-white lg:w-52"
@@ -57,7 +56,6 @@ export default function SearchAutocomplete() {
               </button>
             </div>
 
-            {/* Input Field */}
             <ComboboxInput
               className="w-full rounded-r-lg border-none p-2 pl-3 pr-10 text-xl leading-10 text-gray-900 focus:ring-0"
               autoComplete="off"
@@ -76,7 +74,6 @@ export default function SearchAutocomplete() {
             </ComboboxButton>
           </div>
 
-          {/* Source Dropdown Menu */}
           {showDropdown && (
             <div className="absolute left-0 top-full z-10 mt-1 w-32 rounded-md bg-white shadow-lg ring-1 ring-black lg:w-52">
               <ul className="py-1 text-gray-700">
@@ -85,7 +82,6 @@ export default function SearchAutocomplete() {
                   onClick={() => handleSourceSelect("pypi")}
                 >
                   <SiPypi className="mr-2 text-blue-500" />{" "}
-                  {/* PyPI logo in blue */}
                   pypi
                 </li>
                 <li
@@ -93,7 +89,6 @@ export default function SearchAutocomplete() {
                   onClick={() => handleSourceSelect("conda")}
                 >
                   <SiAnaconda className="mr-2" style={{ color: "#3EB022" }} />{" "}
-                  {/* Conda logo in green */}
                   conda
                 </li>
                 <li
@@ -101,14 +96,12 @@ export default function SearchAutocomplete() {
                   onClick={() => handleSourceSelect("npm")}
                 >
                   <SiNpm className="mr-2" style={{ color: "#C23B33" }} />{" "}
-                  {/* NPM logo in red */}
                   npm
                 </li>
               </ul>
             </div>
           )}
 
-          {/* Combobox Options */}
           <ComboboxOptions className="absolute left-0 top-full mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black focus:outline-none sm:text-sm">
             <Options query={query} packages={packages} loading={loading} />
           </ComboboxOptions>
