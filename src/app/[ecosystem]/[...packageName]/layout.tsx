@@ -1,3 +1,5 @@
+import { Metadata } from "next";
+
 type Props = {
   params: Promise<{
     ecosystem: string;
@@ -5,6 +7,15 @@ type Props = {
   }>;
   children: React.ReactNode;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { ecosystem, packageName } = await params;
+  const name = packageName.join("/");
+  return {
+    title: `Score • ${ecosystem}/${name}`,
+    description: `Score for the ${ecosystem} package ${name}`,
+  };
+}
 
 export default async function Package({ params, children }: Props) {
   const { ecosystem, packageName } = await params;

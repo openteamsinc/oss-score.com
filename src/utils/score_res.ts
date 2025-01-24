@@ -70,6 +70,10 @@ export type Score = {
     value: HealthRiskValue;
     notes: string[];
   };
+  legal: {
+    value: HealthRiskValue;
+    notes: string[];
+  };
   last_updated: string;
   license: string;
   license_kind: string;
