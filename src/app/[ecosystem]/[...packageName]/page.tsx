@@ -38,6 +38,23 @@ export default async function PackageScoreComponent({ params }: Props) {
       <div>
         <section className="mb-2">
           <h2 className="m-2 flex items-center border-b border-b-slate-300 text-lg">
+            Maturity: <Maturity value={score.maturity.value} />
+          </h2>
+          <ul className="w-full list-inside space-y-2 text-sm text-slate-500">
+            {score.maturity.notes.map((noteId, index) => (
+              <li key={index} className="mb-2 flex items-start">
+                <span className="h-5 px-2">
+                  <Icon path={mdiCircleSmall} size={0.5} />
+                </span>
+
+                {notes[noteId]?.note || `Unknown id ${noteId}`}
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="mb-2">
+          <h2 className="m-2 flex items-center border-b border-b-slate-300 text-lg">
             Health & Risk: <Risk value={score.health_risk.value} />
           </h2>
           <ul className="w-full list-inside space-y-2 text-sm text-slate-500">
@@ -65,18 +82,29 @@ export default async function PackageScoreComponent({ params }: Props) {
         </section>
         <section className="mb-2">
           <h2 className="m-2 flex items-center border-b border-b-slate-300 text-lg">
-            Maturity: <Maturity value={score.maturity.value} />
+            Legal Risk: <Risk value={score.legal.value} />
           </h2>
           <ul className="w-full list-inside space-y-2 text-sm text-slate-500">
-            {score.maturity.notes.map((noteId, index) => (
-              <li key={index} className="mb-2 flex items-start">
-                <span className="h-5 px-2">
-                  <Icon path={mdiCircleSmall} size={0.5} />
-                </span>
-
-                {notes[noteId]?.note || `Unknown id ${noteId}`}
-              </li>
-            ))}
+            {score.legal.notes
+              .filter((n) => n != null)
+              .map((noteId, index) => (
+                <li key={index} className="mb-2 flex items-start">
+                  <span className="h-5 px-2">
+                    <Icon
+                      path={mdiAlert}
+                      size={0.5}
+                      className="text-yellow-600"
+                    />
+                  </span>
+                  {notes[noteId]?.note || `Unknown id ${noteId}`}
+                  <RiskHelp
+                    note={notes[noteId]}
+                    ecosystem={ecosystem}
+                    packageName={name}
+                    score={score}
+                  />
+                </li>
+              ))}
           </ul>
         </section>
       </div>
