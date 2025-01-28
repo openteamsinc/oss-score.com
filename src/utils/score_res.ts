@@ -112,7 +112,12 @@ export async function fetchPackageScore(
 }
 
 export type Notes = {
-  [key: string]: { code: string; note: string; id: number };
+  [key: string]: {
+    code: string;
+    id: number;
+    category: string;
+    description: string;
+  };
 };
 
 export async function fetchNotes(): Promise<Notes> {

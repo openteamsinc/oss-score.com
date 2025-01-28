@@ -5,22 +5,23 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { NoteRow } from "@/utils/database";
 
 import HelpContent from "./Codes";
-import { Score } from "@/utils/score_res";
+import { HelpProps } from "./Codes/HelpProps";
 
-type Props = {
-  note: NoteRow;
-  ecosystem: string;
-  packageName: string;
-  score: Score;
+export type Note = {
+  code: string;
+  description: string;
 };
+
+type Props = HelpProps;
+
 export default function RiskHelp({
   note,
   ecosystem,
   packageName,
   score,
+  source,
 }: Props) {
   if (note == null) {
     return null;
@@ -36,10 +37,11 @@ export default function RiskHelp({
       </PopoverTrigger>
       <PopoverContent>
         <HelpContent
-          code={note.code}
+          note={note}
           ecosystem={ecosystem}
           packageName={packageName}
           score={score}
+          source={source}
         />
       </PopoverContent>
     </Popover>
