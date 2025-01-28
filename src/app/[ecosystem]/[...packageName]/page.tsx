@@ -20,14 +20,12 @@ type Props = {
 };
 
 export default async function PackageScoreComponent({ params }: Props) {
-  const notes = await fetchNotes();
   const { ecosystem, packageName } = await params;
   const name = packageName.join("/");
-  const {
-    package: pkg,
-    status,
-    score,
-  } = await fetchPackageScore(ecosystem, name);
+  const [notes, { package: pkg, status, score, source }] = await Promise.all([
+    fetchNotes(),
+    fetchPackageScore(ecosystem, name),
+  ]);
 
   if (status === "not_found") {
     notFound();
@@ -47,7 +45,7 @@ export default async function PackageScoreComponent({ params }: Props) {
                   <Icon path={mdiCircleSmall} size={0.5} />
                 </span>
 
-                {notes[noteId]?.note || `Unknown id ${noteId}`}
+                {notes[noteId]?.description || `Unknown id ${noteId}`}
               </li>
             ))}
           </ul>
@@ -69,12 +67,13 @@ export default async function PackageScoreComponent({ params }: Props) {
                       className="text-yellow-600"
                     />
                   </span>
-                  {notes[noteId]?.note || `Unknown id ${noteId}`}
+                  {notes[noteId]?.description || `Unknown id ${noteId}`}
                   <RiskHelp
                     note={notes[noteId]}
                     ecosystem={ecosystem}
                     packageName={name}
                     score={score}
+                    source={source}
                   />
                 </li>
               ))}
@@ -96,12 +95,13 @@ export default async function PackageScoreComponent({ params }: Props) {
                       className="text-yellow-600"
                     />
                   </span>
-                  {notes[noteId]?.note || `Unknown id ${noteId}`}
+                  {notes[noteId]?.description || `Unknown id ${noteId}`}
                   <RiskHelp
                     note={notes[noteId]}
                     ecosystem={ecosystem}
                     packageName={name}
                     score={score}
+                    source={source}
                   />
                 </li>
               ))}
