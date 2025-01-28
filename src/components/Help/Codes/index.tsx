@@ -1,4 +1,3 @@
-import { Score } from "@/utils/score_res";
 import PACKAGE_NAME_MISMATCH from "./PACKAGE_NAME_MISMATCH";
 import Generic from "./Generic";
 import REPO_NOT_FOUND from "./REPO_NOT_FOUND";
@@ -7,15 +6,10 @@ import NO_PROJECT_NAME from "./NO_PROJECT_NAME";
 import NO_AUTHORS_THIS_YEAR from "./NO_AUTHORS_THIS_YEAR";
 import FEW_MAX_MONTHLY_AUTHORS from "./FEW_MAX_MONTHLY_AUTHORS";
 import LICENSE_CHECKOUT_ERROR from "./LICENSE_CHECKOUT_ERROR";
+import LICENSE_MODIFIED from "./LICENSE_MODIFIED";
+import { HelpProps } from "./HelpProps";
 
-type Props = {
-  code: string;
-  ecosystem: string;
-  packageName: string;
-  score: Score;
-};
-
-function getComponent(code: string): React.FC<Props> {
+function getComponent(code: string): React.FC<HelpProps> {
   switch (code) {
     case "FEW_MAX_MONTHLY_AUTHORS":
       return FEW_MAX_MONTHLY_AUTHORS;
@@ -31,24 +25,28 @@ function getComponent(code: string): React.FC<Props> {
       return PACKAGE_NAME_MISMATCH;
     case "LICENSE_CHECKOUT_ERROR":
       return LICENSE_CHECKOUT_ERROR;
+    case "LICENSE_MODIFIED":
+      return LICENSE_MODIFIED;
     default:
       return Generic;
   }
 }
 
 export default function HelpContent({
-  code,
+  note,
   ecosystem,
   packageName,
   score,
-}: Props) {
-  const Component = getComponent(code);
+  source,
+}: HelpProps) {
+  const Component = getComponent(note.code);
   return (
     <Component
-      code={code}
+      note={note}
       ecosystem={ecosystem}
       packageName={packageName}
       score={score}
+      source={source}
     />
   );
 }
