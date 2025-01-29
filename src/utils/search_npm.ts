@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export type NpmPackageResult = {
   name: string;
   version: string;
@@ -17,17 +19,15 @@ export default async function searchNpmPackages(
   const searchUrl = `https://registry.npmjs.org/-/v1/search`;
 
   try {
-    const data = await fetch(
+    const response = await fetch(
       `${searchUrl}?text=${encodeURIComponent(query)}&size=10`,
-      {
-        method: "GET",
-      },
-    ).then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    });
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
 
     const results: NpmPackageResult[] = data.objects.map(
       (pkg: NpmApiPackage) => ({
@@ -39,6 +39,9 @@ export default async function searchNpmPackages(
 
     return results;
   } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : "An unknown error occurred.";
+    toast.error(`Error fetching data from npm registry: ${errorMessage}`);
     console.error("Error fetching data from npm registry:", error);
     return [];
   }

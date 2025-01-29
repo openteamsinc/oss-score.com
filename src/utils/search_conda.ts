@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export type CondaPackageResult = {
   name: string;
   latestVersion: string;
@@ -18,22 +20,15 @@ export default async function searchCondaForgePackages(
   const searchUrl = `https://api.anaconda.org/search`;
 
   try {
-    const data = await fetch(
+    const response = await fetch(
       `${searchUrl}?name=${encodeURIComponent(query)}&channel=conda-forge`,
-      {
-        method: "GET",
-      },
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        throw error;
-      });
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
 
     const results: CondaPackageResult[] = data
       .map((pkg: CondaApiPackage) => ({
@@ -46,6 +41,9 @@ export default async function searchCondaForgePackages(
 
     return results;
   } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : "An unknown error occurred.";
+    toast.error(`Error fetching data from Anaconda.org: ${errorMessage}`);
     console.error("Error fetching data from Anaconda.org:", error);
     return [];
   }

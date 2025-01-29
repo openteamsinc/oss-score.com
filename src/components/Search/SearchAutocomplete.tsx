@@ -7,6 +7,12 @@ import {
   ComboboxInput,
   ComboboxOptions,
 } from "@headlessui/react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import Icon from "@mdi/react";
 import { mdiChevronDown } from "@mdi/js";
 import useSearchPackages from "./useSearchPackages";
@@ -17,7 +23,6 @@ import { SiPypi, SiAnaconda, SiNpm } from "react-icons/si";
 
 export default function SearchAutocomplete() {
   const [query, setQuery] = React.useState("");
-  const [showDropdown, setShowDropdown] = useState(false);
   const [selectedSource, setSelectedSource] = useState("Source");
   const { packages, loading } = useSearchPackages(
     query,
@@ -27,34 +32,40 @@ export default function SearchAutocomplete() {
 
   const handleSourceSelect = (source: string) => {
     setSelectedSource(source);
-    setShowDropdown(false);
   };
 
   return (
     <div className="mx-auto w-screen">
       <Combobox
-        onChange={(value: PackageResult | null) => {
-          if (value == null) {
-            return;
-          }
+        onChange={(value: { ecosystem: string; name: string } | null) => {
+          if (!value) return;
           router.push(`/${value.ecosystem}/${value.name}`);
         }}
       >
         <div className="relative mt-1 flex justify-center">
           <div className="flex w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none sm:text-sm">
-            <div>
-              <button
-                className="flex h-full w-32 items-center justify-center rounded-l-lg bg-blue-500 px-4 text-sm font-medium text-white lg:w-52"
-                onClick={() => setShowDropdown(!showDropdown)}
-              >
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex h-full w-32 items-center justify-center rounded-l-lg bg-blue-500 px-4 text-sm font-medium text-white lg:w-52">
                 <span className="text-center">{selectedSource}</span>
                 <Icon
                   path={mdiChevronDown}
                   className="ml-2 size-5 text-white"
                   aria-hidden="true"
                 />
-              </button>
-            </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-32 lg:w-52">
+                <DropdownMenuItem onClick={() => handleSourceSelect("pypi")}>
+                  <SiPypi className="mr-2 text-blue-500" /> pypi
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleSourceSelect("conda")}>
+                  <SiAnaconda className="mr-2" style={{ color: "#3EB022" }} />{" "}
+                  conda
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleSourceSelect("npm")}>
+                  <SiNpm className="mr-2" style={{ color: "#C23B33" }} /> npm
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             <ComboboxInput
               className="w-full rounded-r-lg border-none p-2 pl-3 pr-10 text-xl leading-10 text-gray-900 focus:ring-0"
@@ -73,32 +84,6 @@ export default function SearchAutocomplete() {
               />
             </ComboboxButton>
           </div>
-
-          {showDropdown && (
-            <div className="absolute left-0 top-full z-10 mt-1 w-32 rounded-md bg-white shadow-lg ring-1 ring-black lg:w-52">
-              <ul className="py-1 text-gray-700">
-                <li
-                  className="flex cursor-pointer items-center px-4 py-2 hover:bg-gray-100"
-                  onClick={() => handleSourceSelect("pypi")}
-                >
-                  <SiPypi className="mr-2 text-blue-500" /> pypi
-                </li>
-                <li
-                  className="flex cursor-pointer items-center px-4 py-2 hover:bg-gray-100"
-                  onClick={() => handleSourceSelect("conda")}
-                >
-                  <SiAnaconda className="mr-2" style={{ color: "#3EB022" }} />{" "}
-                  conda
-                </li>
-                <li
-                  className="flex cursor-pointer items-center px-4 py-2 hover:bg-gray-100"
-                  onClick={() => handleSourceSelect("npm")}
-                >
-                  <SiNpm className="mr-2" style={{ color: "#C23B33" }} /> npm
-                </li>
-              </ul>
-            </div>
-          )}
 
           <ComboboxOptions className="absolute left-0 top-full mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black focus:outline-none sm:text-sm">
             <Options query={query} packages={packages} loading={loading} />

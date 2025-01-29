@@ -1,53 +1,44 @@
+import { toast } from "react-toastify";
+import { stringSimilarity } from "string-similarity-js";
+
 interface PyPIPackageResult {
   name: string;
   package_manager_url: string;
-}
-
-let cachedData: { projects: { name: string }[] } = { projects: [] };
-
-async function fetchPyPIProjects(): Promise<{ projects: { name: string }[] }> {
-  if (cachedData.projects.length > 0) {
-    return cachedData;
-  }
-
-  const response = await fetch("https://pypi.org/simple/", {
-    headers: { Accept: "application/vnd.pypi.simple.v1+json" },
-  });
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  cachedData = await response.json();
-  return cachedData;
 }
 
 function calculateRelevanceScore(query: string, packageName: string): number {
   const normalizedQuery = query.toLowerCase();
   const normalizedPackageName = packageName.toLowerCase();
 
-  if (normalizedQuery === normalizedPackageName) {
-    return 1;
-  } else if (normalizedPackageName.startsWith(normalizedQuery)) {
-    return 0.9;
-  } else if (normalizedPackageName.includes(normalizedQuery)) {
-    const position = normalizedPackageName.indexOf(normalizedQuery);
-    return 0.7 - position * 0.01;
-  }
+  const score = stringSimilarity(normalizedQuery, normalizedPackageName);
 
-  const lengthPenalty =
-    Math.abs(normalizedPackageName.length - normalizedQuery.length) * 0.01;
-  return Math.max(0, 0.5 - lengthPenalty);
+  return score;
 }
 
 export default async function searchPyPIPackages(
   query: string,
 ): Promise<PyPIPackageResult[]> {
   try {
-    const data = await fetchPyPIProjects();
+    const response = await fetch("https://pypi.org/simple/", {
+      headers: { Accept: "application/vnd.pypi.simple.v1+json" },
+      cache: "no-store",
+    });
 
-    const filteredResults = data.projects.filter((pkg: { name: string }) =>
-      pkg.name.toLowerCase().includes(query.toLowerCase()),
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    const projects = Array.isArray(data.projects) ? data.projects : [];
+    if (projects.length === 0) {
+      toast.warn("No projects found.");
+      return [];
+    }
+
+    const queryLower = query.toLowerCase();
+    const filteredResults = projects.filter((pkg: { name: string }) =>
+      pkg.name.toLowerCase().includes(queryLower),
     );
 
     const results: PyPIPackageResult[] = filteredResults
@@ -64,7 +55,9 @@ export default async function searchPyPIPackages(
 
     return results;
   } catch (error) {
-    console.error("Error fetching PyPI packages:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "An unknown error occurred.";
+    toast.error(`Failed to fetch PyPI packages: ${errorMessage}`);
     return [];
   }
 }

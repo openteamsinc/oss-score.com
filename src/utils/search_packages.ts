@@ -14,26 +14,28 @@ export default async function search_packages(
   query: string,
   ecosystem: string,
 ): Promise<PackageResult[]> {
-  let results: PackageResult[] = [];
-
   if (ecosystem === "pypi") {
     const pypiResults = await searchPyPIPackages(query);
-    results = pypiResults.map((pkg) => ({
+    return pypiResults.map((pkg) => ({
       ecosystem: "pypi",
       name: pkg.name,
       url: pkg.package_manager_url,
     }));
-  } else if (ecosystem === "conda") {
+  }
+
+  if (ecosystem === "conda") {
     const condaResults = await searchCondaForgePackages(query);
-    results = condaResults.map((pkg) => ({
+    return condaResults.map((pkg) => ({
       ecosystem: "conda-forge",
       name: pkg.name,
       version: pkg.latestVersion,
       url: pkg.url,
     }));
-  } else if (ecosystem === "npm") {
+  }
+
+  if (ecosystem === "npm") {
     const npmResults = await searchNpmPackages(query);
-    results = npmResults.map((pkg) => ({
+    return npmResults.map((pkg) => ({
       ecosystem: "npm",
       name: pkg.name,
       version: pkg.version,
@@ -41,5 +43,5 @@ export default async function search_packages(
     }));
   }
 
-  return results;
+  return [];
 }
