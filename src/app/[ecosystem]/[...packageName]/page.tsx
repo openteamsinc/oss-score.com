@@ -22,6 +22,7 @@ type Props = {
 export default async function PackageScoreComponent({ params }: Props) {
   const { ecosystem, packageName } = await params;
   const name = packageName.join("/");
+
   const [notes, { package: pkg, status, score, source }] = await Promise.all([
     fetchNotes(),
     fetchPackageScore(ecosystem, name),

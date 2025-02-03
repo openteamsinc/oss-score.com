@@ -106,7 +106,11 @@ export async function fetchPackageScore(
   name: string,
 ): Promise<PackageScore> {
   const url = `${BASE_URL}/score/${ecosystem.toLowerCase()}/${name}`;
+  console.debug(url);
   const res = await fetch(url);
+  if (res.status != 200) {
+    throw new Error("Failed to fetch package score");
+  }
   const data = await res.json();
   return data;
 }
