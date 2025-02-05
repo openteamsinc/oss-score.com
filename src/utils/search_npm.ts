@@ -6,43 +6,32 @@ export type NpmPackageResult = {
   apiUrl: string;
 };
 
-type NpmApiPackage = {
-  package: {
-    name: string;
-    version: string;
-  };
+type NpmApiResponse = {
+  objects: Array<{ package: { name: string; version: string } }>;
 };
 
 export default async function searchNpmPackages(
   query: string,
 ): Promise<NpmPackageResult[]> {
-  const searchUrl = `https://registry.npmjs.org/-/v1/search`;
+  const searchUrl = `https://registry.npmjs.org/-/v1/search?text=${encodeURIComponent(query)}&size=10`;
 
   try {
-    const response = await fetch(
-      `${searchUrl}?text=${encodeURIComponent(query)}&size=10`,
-    );
+    const response = await fetch(searchUrl);
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+    const data: NpmApiResponse = await response.json();
 
-    const data = await response.json();
-
-    const results: NpmPackageResult[] = data.objects.map(
-      (pkg: NpmApiPackage) => ({
-        name: pkg.package.name,
-        version: pkg.package.version,
-        apiUrl: `https://registry.npmjs.org/${pkg.package.name}`,
-      }),
-    );
-
-    return results;
+    return data.objects.map(({ package: pkg }) => ({
+      name: pkg.name,
+      version: pkg.version,
+      apiUrl: `https://registry.npmjs.org/${pkg.name}`,
+    }));
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "An unknown error occurred.";
-    toast.error(`Error fetching data from npm registry: ${errorMessage}`);
-    console.error("Error fetching data from npm registry:", error);
+    toast.error(
+      `Error fetching data from npm registry: ${
+        error instanceof Error ? error.message : "An unknown error occurred."
+      }`,
+    );
     return [];
   }
 }

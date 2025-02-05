@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { useState } from "react";
 import {
   Combobox,
   ComboboxButton,
@@ -10,7 +9,8 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Icon from "@mdi/react";
@@ -23,16 +23,31 @@ import { SiPypi, SiAnaconda, SiNpm } from "react-icons/si";
 
 export default function SearchAutocomplete() {
   const [query, setQuery] = React.useState("");
-  const [selectedSource, setSelectedSource] = useState("Source");
+  const [selectedSource, setSelectedSource] = React.useState("Source");
   const { packages, loading } = useSearchPackages(
     query,
     selectedSource === "Source" ? "" : selectedSource,
   );
-  const router = useRouter();
 
-  const handleSourceSelect = (source: string) => {
-    setSelectedSource(source);
-  };
+  const sources = [
+    {
+      id: "pypi",
+      label: "pypi",
+      icon: <SiPypi className="mr-2 text-blue-500" />,
+    },
+    {
+      id: "conda",
+      label: "conda",
+      icon: <SiAnaconda className="mr-2" style={{ color: "#3EB022" }} />,
+    },
+    {
+      id: "npm",
+      label: "npm",
+      icon: <SiNpm className="mr-2" style={{ color: "#C23B33" }} />,
+    },
+  ];
+
+  const router = useRouter();
 
   return (
     <div className="mx-auto w-screen">
@@ -45,25 +60,24 @@ export default function SearchAutocomplete() {
         <div className="relative mt-1 flex justify-center">
           <div className="flex w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none sm:text-sm">
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex h-full w-32 items-center justify-center rounded-l-lg bg-blue-500 px-4 text-sm font-medium text-white lg:w-52">
-                <span className="text-center">{selectedSource}</span>
+              <DropdownMenuTrigger className="flex w-32 items-center justify-center rounded-l-lg bg-blue-500 px-4 text-sm font-medium text-white lg:w-52">
+                {selectedSource}
                 <Icon
                   path={mdiChevronDown}
                   className="ml-2 size-5 text-white"
-                  aria-hidden="true"
                 />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-32 lg:w-52">
-                <DropdownMenuItem onClick={() => handleSourceSelect("pypi")}>
-                  <SiPypi className="mr-2 text-blue-500" /> pypi
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleSourceSelect("conda")}>
-                  <SiAnaconda className="mr-2" style={{ color: "#3EB022" }} />{" "}
-                  conda
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleSourceSelect("npm")}>
-                  <SiNpm className="mr-2" style={{ color: "#C23B33" }} /> npm
-                </DropdownMenuItem>
+                <DropdownMenuRadioGroup
+                  value={selectedSource}
+                  onValueChange={setSelectedSource}
+                >
+                  {sources.map((source) => (
+                    <DropdownMenuRadioItem key={source.id} value={source.id}>
+                      {source.icon} {source.label}
+                    </DropdownMenuRadioItem>
+                  ))}
+                </DropdownMenuRadioGroup>
               </DropdownMenuContent>
             </DropdownMenu>
 
