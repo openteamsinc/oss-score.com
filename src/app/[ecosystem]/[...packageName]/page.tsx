@@ -20,14 +20,13 @@ type Props = {
 };
 
 export default async function PackageScoreComponent({ params }: Props) {
-  const notes = await fetchNotes();
   const { ecosystem, packageName } = await params;
   const name = packageName.join("/");
-  const {
-    package: pkg,
-    status,
-    score,
-  } = await fetchPackageScore(ecosystem, name);
+
+  const [notes, { package: pkg, status, score, source }] = await Promise.all([
+    fetchNotes(),
+    fetchPackageScore(ecosystem, name),
+  ]);
 
   if (status === "not_found") {
     notFound();
@@ -36,6 +35,23 @@ export default async function PackageScoreComponent({ params }: Props) {
   return (
     <div className="grid grid-cols-2 gap-4">
       <div>
+        <section className="mb-2">
+          <h2 className="m-2 flex items-center border-b border-b-slate-300 text-lg">
+            Maturity: <Maturity value={score.maturity.value} />
+          </h2>
+          <ul className="w-full list-inside space-y-2 text-sm text-slate-500">
+            {score.maturity.notes.map((noteId, index) => (
+              <li key={index} className="mb-2 flex items-start">
+                <span className="h-5 px-2">
+                  <Icon path={mdiCircleSmall} size={0.5} />
+                </span>
+
+                {notes[noteId]?.description || `Unknown id ${noteId}`}
+              </li>
+            ))}
+          </ul>
+        </section>
+
         <section className="mb-2">
           <h2 className="m-2 flex items-center border-b border-b-slate-300 text-lg">
             Health & Risk: <Risk value={score.health_risk.value} />
@@ -52,12 +68,13 @@ export default async function PackageScoreComponent({ params }: Props) {
                       className="text-yellow-600"
                     />
                   </span>
-                  {notes[noteId]?.note || `Unknown id ${noteId}`}
+                  {notes[noteId]?.description || `Unknown id ${noteId}`}
                   <RiskHelp
                     note={notes[noteId]}
                     ecosystem={ecosystem}
                     packageName={name}
                     score={score}
+                    source={source}
                   />
                 </li>
               ))}
@@ -65,18 +82,30 @@ export default async function PackageScoreComponent({ params }: Props) {
         </section>
         <section className="mb-2">
           <h2 className="m-2 flex items-center border-b border-b-slate-300 text-lg">
-            Maturity: <Maturity value={score.maturity.value} />
+            Legal Risk: <Risk value={score.legal.value} />
           </h2>
           <ul className="w-full list-inside space-y-2 text-sm text-slate-500">
-            {score.maturity.notes.map((noteId, index) => (
-              <li key={index} className="mb-2 flex items-start">
-                <span className="h-5 px-2">
-                  <Icon path={mdiCircleSmall} size={0.5} />
-                </span>
-
-                {notes[noteId]?.note || `Unknown id ${noteId}`}
-              </li>
-            ))}
+            {score.legal.notes
+              .filter((n) => n != null)
+              .map((noteId, index) => (
+                <li key={index} className="mb-2 flex items-start">
+                  <span className="h-5 px-2">
+                    <Icon
+                      path={mdiAlert}
+                      size={0.5}
+                      className="text-yellow-600"
+                    />
+                  </span>
+                  {notes[noteId]?.description || `Unknown id ${noteId}`}
+                  <RiskHelp
+                    note={notes[noteId]}
+                    ecosystem={ecosystem}
+                    packageName={name}
+                    score={score}
+                    source={source}
+                  />
+                </li>
+              ))}
           </ul>
         </section>
       </div>
