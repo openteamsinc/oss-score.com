@@ -15,13 +15,15 @@ export default function Error({
   }, [error]);
 
   const invalidEcosystemMatch = error.message.match(/(.+?) doesn't exist/);
-  const invalidEcosystem = invalidEcosystemMatch ? invalidEcosystemMatch[1] : null;
+  const invalidEcosystem = invalidEcosystemMatch
+    ? invalidEcosystemMatch[1]
+    : null;
 
   return (
     <div>
       <h2>Something went wrong!</h2>
       {invalidEcosystem ? (
-        <p>{invalidEcosystem} doesn't exist</p>
+        <p>{invalidEcosystem} doesn&apos;t exist</p>
       ) : (
         <p>An unexpected error occurred.</p>
       )}
