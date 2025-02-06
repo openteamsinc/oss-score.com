@@ -19,9 +19,15 @@ type Props = {
   }>;
 };
 
+const VALID_ECOSYSTEMS = ["pypi", "conda", "npm"];
+
 export default async function PackageScoreComponent({ params }: Props) {
   const { ecosystem, packageName } = await params;
   const name = packageName.join("/");
+
+  if (!VALID_ECOSYSTEMS.includes(ecosystem)) {
+    throw new Error(`${ecosystem} doesn't exist`);
+  }
 
   const [notes, { package: pkg, status, score, source }] = await Promise.all([
     fetchNotes(),
