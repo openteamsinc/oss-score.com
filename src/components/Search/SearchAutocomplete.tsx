@@ -23,11 +23,8 @@ import { SiPypi, SiAnaconda, SiNpm } from "react-icons/si";
 
 export default function SearchAutocomplete() {
   const [query, setQuery] = React.useState("");
-  const [selectedSource, setSelectedSource] = React.useState("Source");
-  const { packages, loading } = useSearchPackages(
-    query,
-    selectedSource === "Source" ? "" : selectedSource,
-  );
+  const [selectedSource, setSelectedSource] = React.useState("");
+  const { packages, loading } = useSearchPackages(query, selectedSource || "");
 
   const sources = [
     {
@@ -61,7 +58,9 @@ export default function SearchAutocomplete() {
           <div className="flex w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none sm:text-sm">
             <DropdownMenu>
               <DropdownMenuTrigger className="flex w-32 items-center justify-center rounded-l-lg bg-blue-500 px-4 text-sm font-medium text-white lg:w-52">
-                {selectedSource}
+                {selectedSource
+                  ? sources.find((s) => s.id === selectedSource)?.label
+                  : "Source"}
                 <Icon
                   path={mdiChevronDown}
                   className="ml-2 size-5 text-white"
@@ -88,15 +87,20 @@ export default function SearchAutocomplete() {
               displayValue={(item: PackageResult | null) =>
                 item ? `${item.ecosystem}/${item.name}` : ""
               }
-              placeholder="Search packages..."
+              placeholder={
+                selectedSource ? "Search packages..." : "Select a source first"
+              }
+              disabled={!selectedSource}
             />
-            <ComboboxButton className="absolute inset-y-0 right-0 flex items-center pr-2">
-              <Icon
-                path={mdiChevronDown}
-                className="size-5 text-gray-400"
-                aria-hidden="true"
-              />
-            </ComboboxButton>
+            {selectedSource && (
+              <ComboboxButton className="absolute inset-y-0 right-0 flex items-center pr-2">
+                <Icon
+                  path={mdiChevronDown}
+                  className="size-5 text-gray-400"
+                  aria-hidden="true"
+                />
+              </ComboboxButton>
+            )}
           </div>
 
           <ComboboxOptions className="absolute left-0 top-full mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black focus:outline-none sm:text-sm">

@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 
 export type CondaApiPackage = {
-  full_name: string;
+  name: string;
   latestVersion: string;
   url: string;
   owner: string;
@@ -19,17 +19,28 @@ async function fetchCondaPackages(query: string): Promise<CondaApiPackage[]> {
 
     return await response.json();
   } catch (error) {
-    toast.error(
-      `Error fetching data from Anaconda.org: ${
-        error instanceof Error ? error.message : "An unknown error occurred."
-      }`,
-    );
-    return [];
+    const errorMessage =
+      error instanceof Error ? error.message : "An unknown error occurred.";
+    toast.error(`Error fetching data from Anaconda.org: ${errorMessage}`);
+    throw new Error(`Error fetching data from Anaconda.org: ${errorMessage}`);
   }
 }
 
 export default async function searchCondaForgePackages(
   query: string,
 ): Promise<CondaApiPackage[]> {
-  return await fetchCondaPackages(query);
+  const condaResults = await fetchCondaPackages(query);
+
+  const uniquePackages = new Map<string, CondaApiPackage>();
+
+  for (const pkg of condaResults) {
+    if (!uniquePackages.has(pkg.name)) {
+      uniquePackages.set(pkg.name, {
+        ...pkg,
+        name: `conda-forge/${pkg.name}`,
+      });
+    }
+  }
+
+  return Array.from(uniquePackages.values()).slice(0, 10);
 }

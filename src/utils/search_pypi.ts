@@ -20,10 +20,10 @@ async function fetchPyPIProjects(): Promise<PyPIPackageResult[]> {
     const data = await response.json();
     return data.projects ?? [];
   } catch (error) {
-    toast.error(
-      `Failed to fetch PyPI packages: ${error instanceof Error ? error.message : "An unknown error occurred."}`,
-    );
-    return [];
+    const errorMessage =
+      error instanceof Error ? error.message : "An unknown error occurred.";
+    toast.error(`Failed to fetch PyPI packages: ${errorMessage}`);
+    throw new Error(`Failed to fetch PyPI packages: ${errorMessage}`);
   }
 }
 
