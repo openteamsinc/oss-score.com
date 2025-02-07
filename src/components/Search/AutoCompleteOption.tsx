@@ -1,5 +1,3 @@
-// import { maturityColor, maturityIconPath } from "@/components/Maturity";
-// import { riskColor, riskIconPath } from "@/components/Risk";
 import { PackageResult } from "@/utils/search_packages";
 import { ComboboxOption } from "@headlessui/react";
 import { mdiSearchWeb } from "@mdi/js";

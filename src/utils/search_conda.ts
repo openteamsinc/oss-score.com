@@ -19,10 +19,7 @@ async function fetchCondaPackages(query: string): Promise<CondaApiPackage[]> {
 
     return await response.json();
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "An unknown error occurred.";
-    toast.error(`Error fetching data from Anaconda.org: ${errorMessage}`);
-    throw new Error(`Error fetching data from Anaconda.org: ${errorMessage}`);
+    throw error;
   }
 }
 

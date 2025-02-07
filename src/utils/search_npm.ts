@@ -23,7 +23,6 @@ export default async function searchNpmPackages(
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : "An unknown error occurred.";
-    toast.error(`Error fetching data from npm registry: ${errorMessage}`);
-    throw new Error(`Error fetching data from npm registry: ${errorMessage}`);
+    throw error;
   }
 }

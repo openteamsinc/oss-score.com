@@ -23,7 +23,7 @@ async function fetchPyPIProjects(): Promise<PyPIPackageResult[]> {
     const errorMessage =
       error instanceof Error ? error.message : "An unknown error occurred.";
     toast.error(`Failed to fetch PyPI packages: ${errorMessage}`);
-    throw new Error(`Failed to fetch PyPI packages: ${errorMessage}`);
+    throw error;
   }
 }
 
