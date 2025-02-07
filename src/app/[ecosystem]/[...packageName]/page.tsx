@@ -23,15 +23,10 @@ export default async function PackageScoreComponent({ params }: Props) {
   const { ecosystem, packageName } = await params;
   const name = packageName.join("/");
 
-  const notes = await fetchNotes();
-  let packageData;
-
-  try {
-    packageData = await fetchPackageScore(ecosystem, name);
-  } catch (error) {
-    throw error;
-  }
-  const { package: pkg, status, score, source } = packageData;
+  const [notes, { package: pkg, status, score, source }] = await Promise.all([
+    fetchNotes(),
+    fetchPackageScore(ecosystem, name),
+  ]);
 
   if (status === "not_found") {
     notFound();
