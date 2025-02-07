@@ -1,5 +1,3 @@
-import { toast } from "react-toastify";
-
 export type CondaApiPackage = {
   name: string;
   latestVersion: string;
@@ -19,6 +17,7 @@ async function fetchCondaPackages(query: string): Promise<CondaApiPackage[]> {
 
     return await response.json();
   } catch (error) {
+    console.log(error);
     throw error;
   }
 }

@@ -1,5 +1,3 @@
-import { toast } from "react-toastify";
-
 export type NpmPackageResult = {
   name: string;
   version: string;
@@ -21,8 +19,7 @@ export default async function searchNpmPackages(
 
     return await response.json();
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "An unknown error occurred.";
+    console.log(error);
     throw error;
   }
 }

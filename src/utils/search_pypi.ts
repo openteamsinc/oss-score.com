@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import { stringSimilarity } from "string-similarity-js";
 
 export type PyPIPackageResult = {
@@ -20,9 +19,7 @@ async function fetchPyPIProjects(): Promise<PyPIPackageResult[]> {
     const data = await response.json();
     return data.projects ?? [];
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "An unknown error occurred.";
-    toast.error(`Failed to fetch PyPI packages: ${errorMessage}`);
+    console.log(error);
     throw error;
   }
 }
