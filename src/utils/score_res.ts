@@ -105,14 +105,12 @@ export async function fetchPackageScore(
   ecosystem: string,
   name: string,
 ): Promise<PackageScore> {
-  if (!(ecosystem in ({} as EcosystemDestination))) {
-    throw new Error(`Invalid ecosystem: "${ecosystem}".`);
-  }
   const url = `${BASE_URL}/score/${ecosystem.toLowerCase()}/${name}`;
   console.debug(url);
   const res = await fetch(url);
   if (res.status != 200) {
-    throw new Error("Failed to fetch package score");
+    const error = await res.json();
+    throw error.detail;
   }
   const data = await res.json();
   return data;
