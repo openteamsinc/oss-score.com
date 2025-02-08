@@ -110,7 +110,7 @@ export async function fetchPackageScore(
   const res = await fetch(url);
   if (res.status != 200) {
     const error = await res.json();
-    throw new Error(error?.detail ||"Failed to fetch package score");
+    throw new Error(error?.detail || "Failed to fetch package score");
   }
   const data = await res.json();
   return data;
