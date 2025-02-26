@@ -85,14 +85,7 @@ export type PackageScore =
       ecosystem: string;
       package_name: string;
       status: "not_found";
-      package: Package;
-      source: null;
-      score: null;
-    }
-  | {
-      ecosystem: string;
-      package_name: string;
-      status: "invalid_ecosystem";
+      errorMessage: undefined;
       package: Package;
       source: null;
       score: null;
@@ -101,9 +94,19 @@ export type PackageScore =
       ecosystem: string;
       package_name: string;
       status: "ok";
+      errorMessage: undefined;
       package: Package;
       source: Source;
       score: Score;
+    }
+  | {
+      ecosystem: string;
+      package_name: string;
+      status: string;
+      errorMessage?: string;
+      package: Package;
+      source: null;
+      score: null;
     };
 
 const BASE_URL =
@@ -116,19 +119,19 @@ export async function fetchPackageScore(
   const url = `${BASE_URL}/score/${ecosystem.toLowerCase()}/${name}`;
   const res = await fetch(url);
 
+  const data = await res.json();
   if (!res.ok) {
-    const err = await res.json();
     return {
       ecosystem,
       package_name: name,
-      status: err.error,
+      status: data.error,
+      errorMessage: data.detail,
       package: {} as Package,
       source: null,
       score: null,
     };
   }
 
-  const data = await res.json();
   return data;
 }
 

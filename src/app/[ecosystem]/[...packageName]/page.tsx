@@ -24,18 +24,15 @@ export default async function PackageScoreComponent({ params }: Props) {
   const { ecosystem, packageName } = await params;
   const name = packageName.join("/");
 
-  const [notes, { package: pkg, status, score, source }] = await Promise.all([
-    fetchNotes(),
-    fetchPackageScore(ecosystem, name),
-  ]);
+  const [notes, { package: pkg, status, score, source, errorMessage }] =
+    await Promise.all([fetchNotes(), fetchPackageScore(ecosystem, name)]);
 
   if (status === "not_found") {
     notFound();
   }
 
-  if (status === "invalid_ecosystem") {
-    const message = `Ecosystem ${ecosystem} is not supported`;
-    return <ErrorMessage message={message} />;
+  if (status !== "ok" || !score) {
+    return <ErrorMessage status={status} message={errorMessage} />;
   }
 
   return (
