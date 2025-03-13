@@ -1,4 +1,4 @@
-import search_packages from "@/utils/search_packages";
+import search_packages from "@/utils/search/searchPackages";
 import { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {

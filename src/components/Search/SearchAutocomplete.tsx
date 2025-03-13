@@ -10,12 +10,12 @@ import Icon from "@mdi/react";
 import { mdiChevronDown } from "@mdi/js";
 import useSearchPackages from "./useSearchPackages";
 import Options from "./Options";
-import { PackageResult } from "@/utils/search_packages";
+import { PackageResult } from "@/utils/search/PackageResult";
 import { useRouter } from "next/navigation";
 
 export default function SearchAutocomplete() {
   const [query, setQuery] = React.useState("");
-  const { packages, loading } = useSearchPackages(query);
+  const { packages, loading } = useSearchPackages(null, query);
   const router = useRouter();
   return (
     <div className="mx-auto w-full max-w-md">
