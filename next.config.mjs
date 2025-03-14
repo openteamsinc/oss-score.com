@@ -2,7 +2,6 @@
 import createMDX from "@next/mdx";
 
 const nextConfig = {
-  serverExternalPackages: ["duckdb", "duckdb-async"],
   pageExtensions: ["mdx", "tsx", "ts"],
 };
 
