@@ -8,8 +8,6 @@ export default function Generic({
   //   packageName,
   //   score,
 }: HelpProps) {
-  console.log({ source });
-  console.log({ source });
   const { license } = source.license;
   return (
     <div>

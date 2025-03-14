@@ -1,4 +1,4 @@
-import { PackageResult } from "@/utils/search_packages";
+import { PackageResult } from "@/utils/search/PackageResult";
 import AutoCompleteOption from "./AutoCompleteOption";
 
 type Props = {

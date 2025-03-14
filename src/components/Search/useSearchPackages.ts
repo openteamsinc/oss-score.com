@@ -1,31 +1,43 @@
 import React from "react";
-import search_packages, { PackageResult } from "@/utils/search_packages";
+import searchPackages from "@/utils/search/searchPackages";
 import { debounce } from "lodash";
+import { toast } from "react-toastify";
+import { PackageResult } from "@/utils/search/PackageResult";
 
-const debouncedFetchPackages = debounce(
-  async (query, setPackages, setLoading) => {
-    if (query.trim().length >= 3) {
-      const results = await search_packages(query);
-      setPackages(results);
-    } else {
-      setPackages([]);
-    }
-    setLoading(false);
-  },
-  300,
-); // 300ms delay
-
-export default function useSearchPackages(query: string) {
+export default function useSearchPackages(
+  ecosystem: string | null,
+  query: string,
+) {
   const [packages, setPackages] = React.useState<PackageResult[]>([]);
   const [loading, setLoading] = React.useState<boolean>(false);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedFetchPackages = React.useCallback(
+    debounce(async (ecosystem: string | null, searchQuery: string) => {
+      if (searchQuery.trim().length >= 3) {
+        try {
+          const results = await searchPackages(ecosystem, searchQuery);
+          setPackages(results);
+        } catch (error) {
+          console.error("Error fetching packages:", error);
+          toast.error("Error fetching packages for search");
+        }
+      } else {
+        setPackages([]);
+      }
+      setLoading(false);
+    }, 300),
+    [],
+  );
+
   React.useEffect(() => {
     setLoading(true);
-    debouncedFetchPackages(query, setPackages, setLoading);
+    debouncedFetchPackages(ecosystem, query);
+
     return () => {
       debouncedFetchPackages.cancel();
     };
-  }, [query]);
+  }, [query, debouncedFetchPackages, ecosystem]);
 
   return { packages, loading };
 }
