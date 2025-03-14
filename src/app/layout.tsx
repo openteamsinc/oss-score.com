@@ -4,6 +4,7 @@ import "./globals.css";
 import Link from "next/link";
 import Icon from "@mdi/react";
 import { mdiGithub } from "@mdi/js";
+import { ToastContainer } from "react-toastify";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -57,6 +58,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className="flex min-h-screen flex-col">
+          <ToastContainer />
           <Header />
           <main className="container mx-auto grow px-4 py-8">{children}</main>
           <Footer />
