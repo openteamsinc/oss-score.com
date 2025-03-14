@@ -34,6 +34,8 @@ const memoizedCondaPackages = memoize(fetchCondaPackages, {
   preFetch: true,
 });
 
+memoizedCondaPackages("conda-forge");
+
 export default async function searchCondaPackages(
   query: string,
   limit: number = 10,

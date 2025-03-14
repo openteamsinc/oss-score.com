@@ -25,6 +25,8 @@ const memoizedPyPIProjects = memoize(fetchPyPIProjects, {
   preFetch: true,
 });
 
+memoizedPyPIProjects();
+
 export default async function searchPyPIPackages(
   query: string,
   limit: number = 10,
