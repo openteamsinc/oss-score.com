@@ -33,7 +33,7 @@ export default function Home() {
               your workflow.
             </p>
             <Link
-              href="/docs"
+              href={`${process.env.SCORE_URL}/docs`}
               className="inline-flex items-center text-blue-500 hover:underline"
             >
               View API Documentation
