@@ -12,6 +12,7 @@ export type Package = {
   source_url: string;
   release_date: string;
   status: null;
+  license: string | null;
 };
 
 type Source = {
