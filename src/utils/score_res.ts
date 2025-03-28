@@ -23,13 +23,7 @@ type Source = {
   first_commit: string;
   latest_commit: string;
   license: License;
-  py_package: null;
-};
-
-type EcosystemDestination = {
-  pypi: null;
-  npm: null;
-  conda: null;
+  package_destinations: [string, string][];
 };
 
 export const UNKNOWN = "Unknown";
@@ -63,7 +57,6 @@ export type HealthRiskValue =
 
 export type Score = {
   source_url: string;
-  ecosystem_destination: EcosystemDestination;
   maturity: {
     value: MaturityValue;
     notes: string[];
