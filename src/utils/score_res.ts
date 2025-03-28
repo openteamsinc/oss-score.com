@@ -4,6 +4,7 @@ type License = {
   similarity: number;
   best_match: string;
   modified: boolean;
+  diff?: string;
 };
 
 export type Package = {

@@ -5,7 +5,7 @@ import ErrorMessage from "@/components/ErrorMessage";
 
 import Risk from "@/components/Risk";
 import Maturity from "@/components/Maturity";
-import OtherStats from "@/components/OtherStats";
+import OtherStats from "@/components/Stats/OtherStats";
 
 import PackageStats from "@/components/Stats/PackageStats";
 
@@ -85,7 +85,7 @@ export default async function PackageScoreComponent({ params }: Props) {
         <h2 className="border-b border-b-slate-300">Package Stats</h2>
         <PackageStats score={score} pkg={pkg} ecosystem={ecosystem} />
         <h2 className="border-b border-b-slate-300">Source Stats</h2>
-        <OtherStats score={score} />
+        <OtherStats score={score} source={source} />
       </div>
     </div>
   );

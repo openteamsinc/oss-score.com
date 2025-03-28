@@ -34,8 +34,10 @@ export default function PackageStats({ pkg, ecosystem }: Props) {
       <TimeStat title="Last Release Date" time={pkg.release_date} />
       <div className="flex flex-row pb-3">
         <dt className="mb-1 grow text-slate-500">License</dt>
-        <dd className="flex items-center ">
-          {pkg.license ? pkg.license : "Not specified"}
+        <dd className="flex max-w-[150px]">
+          <p className="truncate">
+            {pkg.license ? pkg.license : "Not specified"}
+          </p>
         </dd>
       </div>
     </dl>
