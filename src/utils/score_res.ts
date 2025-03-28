@@ -16,7 +16,7 @@ export type Package = {
   license: string | null;
 };
 
-type Source = {
+export type Source = {
   source_url: string;
   recent_authors_count: number;
   max_monthly_authors_count: number;

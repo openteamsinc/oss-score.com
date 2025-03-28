@@ -51,12 +51,6 @@ export type Score = {
   maturity: MaturityScore;
   health_risk: HealthRiskScore;
   packages: Package[];
-  ecosystem_destination: {
-    pypi: string | null;
-    npm: string | null;
-    conda: string | null;
-  };
-
   license: boolean;
   license_kind: boolean;
   license_modified: boolean;
