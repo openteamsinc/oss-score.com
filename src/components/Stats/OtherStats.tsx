@@ -1,4 +1,4 @@
-import { Score } from "@/utils/score_res";
+import { Score, Source } from "@/utils/scoreTypes";
 import TimeStat from "../TimeStat";
 import SourceCodeLink from "../SourceCodeLink";
 import DiffDialog from "./DiffDialog";
@@ -6,27 +6,27 @@ import Link from "next/link";
 
 type Props = {
   score: Score;
-  source: {
-    license?: { diff?: string; modified: boolean };
-    package_destinations: [string, string][];
-  };
+  source: Source | null;
 };
-export default async function OtherStats({ score, source }: Props) {
+export default async function OtherStats({ source }: Props) {
+  if (source == null) {
+    return "No source";
+  }
   return (
     <dl className="max-w-md divide-y divide-slate-200 text-slate-900 ">
       <div className="flex flex-row pb-3">
         <dt className="mb-1 grow text-slate-500">Source</dt>
         <dd className="flex items-center text-blue-900 underline">
-          <SourceCodeLink url={score.source_url} />
+          <SourceCodeLink url={source.source_url} />
         </dd>
       </div>
-      <TimeStat title="Last Source Update" time={score.last_updated} />
+      <TimeStat title="Last Source Update" time={source.latest_commit} />
       <div className="flex flex-row pb-3">
         <dt className="mb-1 grow text-slate-500">License</dt>
         <dd className="flex items-center ">
-          {score.license}
+          {source.license?.license}
           <DiffDialog
-            modified={score.license_modified}
+            modified={Boolean(source.license?.modified)}
             diff={source.license?.diff}
           />
         </dd>

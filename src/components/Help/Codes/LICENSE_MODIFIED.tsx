@@ -8,7 +8,7 @@ export default function Generic({
   //   packageName,
   //   score,
 }: HelpProps) {
-  const { license } = source.license;
+  const license = source.license?.license;
   return (
     <div>
       <h1 className="border-b text-lg text-slate-900">{note.code}</h1>
