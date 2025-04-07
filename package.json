@@ -13,7 +13,7 @@
     "lint:report": "next lint --output-file eslint_report.json --format json"
   },
   "dependencies": {
-    "@headlessui/react": "^2.1.8",
+    "@headlessui/react": "^2.2.1",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
     "@mdx-js/loader": "^3.0.1",
@@ -35,7 +35,7 @@
     "eslint-plugin-tailwindcss": "^3.17.4",
     "install": "^0.13.0",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.485.0",
+    "lucide-react": "^0.487.0",
     "memoizee": "^0.4.17",
     "next": "^15.2.4",
     "p-memoize": "^7.1.1",
@@ -45,7 +45,7 @@
     "react-icons": "^5.5.0",
     "react-toastify": "^11.0.5",
     "string-similarity-js": "^2.1.4",
-    "tailwind-merge": "^3.0.2",
+    "tailwind-merge": "^3.2.0",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
