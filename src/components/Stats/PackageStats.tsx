@@ -1,7 +1,11 @@
-import { Package, Score } from "@/utils/score_res";
+import { Package, Score } from "@/utils/scoreTypes";
 import TimeStat from "../TimeStat";
 import Link from "next/link";
-import { mdiLanguagePython } from "@mdi/js";
+import {
+  mdiLanguageJavascript,
+  mdiLanguagePython,
+  mdiSignLanguage,
+} from "@mdi/js";
 import Icon from "@mdi/react";
 
 type Props = {
@@ -9,6 +13,17 @@ type Props = {
   ecosystem: string;
   pkg?: Package;
 };
+
+function iconForPackage(ecosystem: string): string {
+  switch (ecosystem) {
+    case "pypi":
+      return mdiLanguagePython;
+    case "npm":
+      return mdiLanguageJavascript;
+    default:
+      return mdiSignLanguage;
+  }
+}
 export default function PackageStats({ pkg, ecosystem }: Props) {
   if (pkg == null) {
     return null;
@@ -22,7 +37,11 @@ export default function PackageStats({ pkg, ecosystem }: Props) {
             className="inline items-center underline"
             href={`https://pypi.org/project/${pkg.name}`}
           >
-            <Icon className="inline" path={mdiLanguagePython} size={0.75} />
+            <Icon
+              className="inline"
+              path={iconForPackage(ecosystem)}
+              size={0.75}
+            />
             {pkg.name}
           </Link>
         </dd>

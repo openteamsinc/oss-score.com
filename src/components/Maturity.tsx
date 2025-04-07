@@ -3,7 +3,7 @@ import { mdiCheckCircle, mdiFlask, mdiHelpBox, mdiHistory } from "@mdi/js";
 import Icon from "@mdi/react";
 
 type Props = {
-  value: score.MaturityValue;
+  value: string;
 };
 export function maturityColor(value: score.MaturityValue) {
   switch (value) {
@@ -12,7 +12,7 @@ export function maturityColor(value: score.MaturityValue) {
   }
 }
 
-export function maturityIconPath(value: score.MaturityValue): string {
+export function maturityIconPath(value: string): string {
   switch (value) {
     case score.MATURE:
       return mdiCheckCircle;

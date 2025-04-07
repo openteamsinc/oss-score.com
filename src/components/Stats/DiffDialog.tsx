@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 
 type Props = {
-  diff?: string;
+  diff?: string | null;
   modified: boolean;
 };
 export default function DiffDialog({ modified, diff }: Props) {
