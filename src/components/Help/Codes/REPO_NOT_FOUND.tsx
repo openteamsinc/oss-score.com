@@ -1,17 +1,12 @@
 import SourceCodeLink from "@/components/SourceCodeLink";
-import { Score } from "@/utils/score_res";
 
-type Props = {
-  ecosystem: string;
-  packageName: string;
-  score: Score;
-};
+import { HelpProps } from "./HelpProps";
 
 export default function REPO_NOT_FOUND({
   //   ecosystem,
   //   packageName,
-  score,
-}: Props) {
+  source,
+}: HelpProps) {
   const toml = `[project.urls]
 Repository = "<YOUR VERSION CONTROLL>"
 `;
@@ -21,7 +16,7 @@ Repository = "<YOUR VERSION CONTROLL>"
       <div>
         <h2 className="mb-2 text-base text-slate-900">What could this mean?</h2>
         <p className="p-2 text-sm">
-          It is likely that <SourceCodeLink url={score.source_url} /> does not
+          It is likely that <SourceCodeLink url={source.source_url} /> does not
           point to a valid source code repository
         </p>
         <h2 className="mb-2 text-base text-slate-900">How to Fix</h2>

@@ -5,13 +5,13 @@ import Icon from "@mdi/react";
 
 import RiskHelp from "@/components/Help/Risk";
 
-import { Score, Notes } from "@/utils/score_res";
+import { Score, NoteDescr } from "@/utils/scoreTypes";
 
 type Props = {
   name: string;
   ecosystem: string;
   score: Score;
-  notes: Notes;
+  notes: { [key: string]: NoteDescr };
   scoreNotes: string[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   source: any;

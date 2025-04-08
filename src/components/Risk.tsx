@@ -9,10 +9,10 @@ import {
 import Icon from "@mdi/react";
 
 type Props = {
-  value: score.HealthRiskValue;
+  value: string;
 };
 
-export function riskIconPath(value: score.HealthRiskValue) {
+export function riskIconPath(value: string) {
   switch (value) {
     case score.HEALTHY:
       return mdiLeaf;
@@ -28,7 +28,7 @@ export function riskIconPath(value: score.HealthRiskValue) {
       return "";
   }
 }
-export function riskColor(value: score.HealthRiskValue) {
+export function riskColor(value: string) {
   switch (value) {
     case score.HEALTHY:
       return "green-500";
