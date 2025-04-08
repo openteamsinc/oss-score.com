@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import ErrorMessage from "@/components/ErrorMessage";
 
 import Risk from "@/components/Risk";
-import Maturity from "@/components/Maturity";
 import OtherStats from "@/components/Stats/OtherStats";
 
 import PackageStats from "@/components/Stats/PackageStats";
@@ -37,10 +36,14 @@ export default async function PackageScoreComponent({ params }: Props) {
   return (
     <div className="grid grid-cols-2 gap-4">
       <div>
-        <section className="mb-2">
+        <h1 className="m-2 flex items-center border-b border-b-slate-300 text-lg">
+          Risk Profile
+          <InfoTooltip className="ml-auto" anchor="#legal" />
+        </h1>
+        <section className="mb-2 pl-2">
           <h2 className="m-2 flex items-center border-b border-b-slate-300 text-lg">
-            Maturity: <Maturity value={score.maturity.value} />
-            <InfoTooltip className="ml-auto" anchor="#maturity" />
+            <span className="grow">Maturity:</span>
+            <Risk value={score.maturity.value} />
           </h2>
           <NoteList
             notes={notes}
@@ -52,10 +55,10 @@ export default async function PackageScoreComponent({ params }: Props) {
           />
         </section>
 
-        <section className="mb-2">
+        <section className="mb-2 pl-2">
           <h2 className="m-2 flex items-center border-b border-b-slate-300 text-lg">
-            Health & Risk: <Risk value={score.health_risk.value} />
-            <InfoTooltip className="ml-auto" anchor="#health_risk" />
+            <span className="grow">Health:</span>
+            <Risk value={score.health_risk.value} />
           </h2>
           <NoteList
             notes={notes}
@@ -66,15 +69,29 @@ export default async function PackageScoreComponent({ params }: Props) {
             source={source}
           />
         </section>
-        <section className="mb-2">
+        <section className="mb-2 pl-2">
           <h2 className="m-2 flex items-center border-b border-b-slate-300 text-lg">
-            Legal Risk: <Risk value={score.legal.value} />
-            <InfoTooltip className="ml-auto" anchor="#legal" />
+            <span className="grow">Legal: </span>
+            <Risk value={score.legal.value} />
           </h2>
           <NoteList
             notes={notes}
             ecosystem={ecosystem}
             scoreNotes={score.legal.notes}
+            name={name}
+            score={score}
+            source={source}
+          />
+        </section>
+        <section className="mb-2 pl-2">
+          <h2 className="m-2 flex items-center border-b border-b-slate-300 text-lg">
+            <span className="grow">Security:</span>
+            <Risk value={score.security.value} />
+          </h2>
+          <NoteList
+            notes={notes}
+            ecosystem={ecosystem}
+            scoreNotes={score.security.notes}
             name={name}
             score={score}
             source={source}

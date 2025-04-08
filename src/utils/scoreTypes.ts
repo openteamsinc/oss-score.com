@@ -40,6 +40,7 @@ export type Score = {
   legal: CategorizedScore;
   health_risk: CategorizedScore;
   maturity: CategorizedScore;
+  security: CategorizedScore;
   notes: string[];
 };
 

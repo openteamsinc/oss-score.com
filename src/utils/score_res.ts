@@ -24,6 +24,7 @@ export async function fetchPackageScore(
         legal: { value: "Unknown", notes: [] },
         health_risk: { value: "Unknown", notes: [] },
         maturity: { value: "Unknown", notes: [] },
+        security: { value: "Unknown", notes: [] },
       },
     };
   }
