@@ -2,8 +2,11 @@ import * as score from "@/utils/score";
 import {
   mdiAlert,
   mdiAlertDecagram,
+  mdiCheckCircle,
   mdiFireAlert,
+  mdiFlask,
   mdiHelpBox,
+  mdiHistory,
   mdiLeaf,
 } from "@mdi/js";
 import Icon from "@mdi/react";
@@ -24,6 +27,12 @@ export function riskIconPath(value: string) {
       return mdiFireAlert;
     case score.UNKNOWN:
       return mdiHelpBox;
+    case score.MATURE:
+      return mdiCheckCircle;
+    case score.EXPERIMENTAL:
+      return mdiFlask;
+    case score.LEGACY:
+      return mdiHistory;
     default:
       return "";
   }
@@ -44,14 +53,14 @@ export function riskColor(value: string) {
 }
 
 export default function Risk({ value }: Props) {
-  const style = "ml-2 flex items-center space-x-2";
+  const style = "flex items-center space-x-2";
   const iconPath = riskIconPath(value);
   const color = riskColor(value);
 
   return (
     <span className={`${style} text-${color}`}>
+      <span>{value}</span>
       <Icon path={iconPath} size={0.75} />
-      {value}
     </span>
   );
 }
