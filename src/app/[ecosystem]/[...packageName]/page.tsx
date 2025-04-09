@@ -9,7 +9,6 @@ import PackageStats from "@/components/Stats/PackageStats";
 
 import { fetchPackageScore, fetchNotes } from "@/utils/score_res";
 
-import InfoTooltip from "@/components/InfoTooltip";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import RiskSection from "./RiskSection";
 import { Code, HelpCircle, Package, Shield } from "lucide-react";

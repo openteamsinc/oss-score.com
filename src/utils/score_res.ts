@@ -18,7 +18,16 @@ export async function fetchPackageScore(
       status: data.error,
       errorMessage: data.detail,
       package: {} as Package,
-      source: null,
+      source: {
+        source_url: "",
+        error: "server error",
+        license: null,
+        package_destinations: [],
+        recent_authors_count: null,
+        max_monthly_authors_count: null,
+        first_commit: null,
+        latest_commit: null,
+      },
       score: {
         notes: [],
         legal: { value: "Unknown", notes: [] },
