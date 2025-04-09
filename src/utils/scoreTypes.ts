@@ -48,7 +48,7 @@ export type ScoreResponse = {
   ecosystem: string;
   package_name: string;
   package: Package;
-  source: Source | null;
+  source: Source;
   score: Score;
   status: string;
   errorMessage?: string;

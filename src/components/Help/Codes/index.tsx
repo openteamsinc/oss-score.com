@@ -36,7 +36,7 @@ export default function HelpContent({
   note,
   ecosystem,
   packageName,
-  score,
+
   source,
 }: HelpProps) {
   const Component = getComponent(note.code);
@@ -45,7 +45,6 @@ export default function HelpContent({
       note={note}
       ecosystem={ecosystem}
       packageName={packageName}
-      score={score}
       source={source}
     />
   );

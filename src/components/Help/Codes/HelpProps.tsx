@@ -1,4 +1,4 @@
-import { Score, Source } from "@/utils/scoreTypes";
+import { Source } from "@/utils/scoreTypes";
 
 export type Note = {
   code: string;
@@ -9,7 +9,5 @@ export type HelpProps = {
   note: Note;
   ecosystem: string;
   packageName: string;
-  score: Score;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   source: Source;
 };

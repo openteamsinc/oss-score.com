@@ -5,43 +5,42 @@ import Icon from "@mdi/react";
 
 import RiskHelp from "@/components/Help/Risk";
 
-import { Score, NoteDescr } from "@/utils/scoreTypes";
+import { NoteDescr, Source } from "@/utils/scoreTypes";
 
 type Props = {
   name: string;
   ecosystem: string;
-  score: Score;
   notes: { [key: string]: NoteDescr };
   scoreNotes: string[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  source: any;
+  source: Source;
 };
 
 export default function NoteList({
   notes,
   ecosystem,
   name,
-  score,
   source,
   scoreNotes,
 }: Props) {
   return (
-    <ul className="w-full list-inside space-y-2 text-sm text-slate-500">
+    <ul className="w-full list-inside space-y-2 px-2 text-xs text-slate-500">
       {scoreNotes
         .filter((n) => n != null)
         .map((noteId, index) => (
           <li key={index} className="mb-2 flex items-start">
             <span className="h-5 px-2">
-              <Icon path={mdiAlert} size={0.5} className="text-yellow-600" />
+              <Icon path={mdiAlert} size={"1rem"} className="text-yellow-600" />
             </span>
-            {notes[noteId]?.description || `Unknown id ${noteId}`}
             <RiskHelp
               note={notes[noteId]}
               ecosystem={ecosystem}
               packageName={name}
-              score={score}
               source={source}
-            />
+            >
+              <span className="inline-block cursor-pointer hover:underline">
+                {notes[noteId]?.description || `Unknown id ${noteId}`}
+              </span>
+            </RiskHelp>
           </li>
         ))}
     </ul>
