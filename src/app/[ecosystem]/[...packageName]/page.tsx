@@ -3,14 +3,16 @@ import React from "react";
 import { notFound } from "next/navigation";
 import ErrorMessage from "@/components/ErrorMessage";
 
-import Risk from "@/components/Risk";
 import OtherStats from "@/components/Stats/OtherStats";
 
 import PackageStats from "@/components/Stats/PackageStats";
 
 import { fetchPackageScore, fetchNotes } from "@/utils/score_res";
-import NoteList from "./NotesList";
-import InfoTooltip from "@/components/InfoTooltip";
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import RiskSection from "./RiskSection";
+import { Code, HelpCircle, Package, Shield } from "lucide-react";
+import Link from "next/link";
 
 type Props = {
   params: Promise<{
@@ -18,6 +20,7 @@ type Props = {
     packageName: string[];
   }>;
 };
+
 export default async function PackageScoreComponent({ params }: Props) {
   const { ecosystem, packageName } = await params;
   const name = packageName.join("/");
@@ -36,73 +39,83 @@ export default async function PackageScoreComponent({ params }: Props) {
   return (
     <div className="grid grid-cols-2 gap-4">
       <div>
-        <h1 className="m-2 flex items-center border-b border-b-slate-300 text-lg">
-          Risk Profile
-          <InfoTooltip className="ml-auto" anchor="#legal" />
-        </h1>
-        <section className="mb-2 pl-2">
-          <h2 className="m-2 flex items-center border-b border-b-slate-300 text-lg">
-            <span className="grow">Maturity:</span>
-            <Risk value={score.maturity.value} />
-          </h2>
-          <NoteList
-            notes={notes}
-            ecosystem={ecosystem}
-            scoreNotes={score.maturity.notes}
-            name={name}
-            score={score}
-            source={source}
-          />
-        </section>
-
-        <section className="mb-2 pl-2">
-          <h2 className="m-2 flex items-center border-b border-b-slate-300 text-lg">
-            <span className="grow">Health:</span>
-            <Risk value={score.health_risk.value} />
-          </h2>
-          <NoteList
-            notes={notes}
-            ecosystem={ecosystem}
-            scoreNotes={score.health_risk.notes}
-            name={name}
-            score={score}
-            source={source}
-          />
-        </section>
-        <section className="mb-2 pl-2">
-          <h2 className="m-2 flex items-center border-b border-b-slate-300 text-lg">
-            <span className="grow">Legal: </span>
-            <Risk value={score.legal.value} />
-          </h2>
-          <NoteList
-            notes={notes}
-            ecosystem={ecosystem}
-            scoreNotes={score.legal.notes}
-            name={name}
-            score={score}
-            source={source}
-          />
-        </section>
-        <section className="mb-2 pl-2">
-          <h2 className="m-2 flex items-center border-b border-b-slate-300 text-lg">
-            <span className="grow">Security:</span>
-            <Risk value={score.security.value} />
-          </h2>
-          <NoteList
-            notes={notes}
-            ecosystem={ecosystem}
-            scoreNotes={score.security.notes}
-            name={name}
-            score={score}
-            source={source}
-          />
-        </section>
+        <Card>
+          <CardHeader>
+            <CardTitle className="border-b pb-2">
+              <span className="flex text-slate-800">
+                <Shield className="mr-1 inline-block size-4" />
+                <span className="grow">Risk Profile</span>
+                <Link href={`/categories`}>
+                  <HelpCircle className="ml-2 size-4 text-slate-500 hover:text-slate-700" />
+                </Link>
+              </span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col space-y-2 text-slate-600">
+              <RiskSection
+                title="Maturity"
+                ecosystem={ecosystem}
+                name={name}
+                notes={notes}
+                categorizedScore={score.maturity}
+                source={source}
+              />
+              <RiskSection
+                title="Health"
+                ecosystem={ecosystem}
+                name={name}
+                notes={notes}
+                categorizedScore={score.health_risk}
+                source={source}
+              />
+              <RiskSection
+                title="Legal"
+                ecosystem={ecosystem}
+                name={name}
+                notes={notes}
+                categorizedScore={score.legal}
+                source={source}
+              />
+              <RiskSection
+                title="Security"
+                ecosystem={ecosystem}
+                name={name}
+                notes={notes}
+                categorizedScore={score.security}
+                source={source}
+              />
+            </div>
+          </CardContent>
+        </Card>
       </div>
-      <div>
-        <h2 className="border-b border-b-slate-300">Package Stats</h2>
-        <PackageStats score={score} pkg={pkg} ecosystem={ecosystem} />
-        <h2 className="border-b border-b-slate-300">Source Stats</h2>
-        <OtherStats score={score} source={source} />
+      <div className="flex flex-col space-y-2">
+        <Card>
+          <CardHeader>
+            <CardTitle className="border-b pb-2">
+              <span className="flex text-slate-800">
+                <Package className="mr-1 inline-block size-4" />
+                <span className="grow">Package</span>
+              </span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <PackageStats score={score} pkg={pkg} ecosystem={ecosystem} />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle className="border-b pb-2">
+              <span className="flex text-slate-800">
+                <Code className="mr-1 inline-block size-4" />
+                <span className="grow">Source</span>
+              </span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <OtherStats score={score} source={source} />
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

@@ -15,7 +15,7 @@ export default async function OtherStats({ source }: Props) {
   return (
     <dl className="max-w-md divide-y divide-slate-200 text-slate-900 ">
       <div className="flex flex-row pb-3">
-        <dt className="mb-1 grow text-slate-500">Source</dt>
+        <dt className="mb-1 grow text-slate-500">Location</dt>
         <dd className="flex items-center text-blue-900 underline">
           <SourceCodeLink url={source.source_url} />
         </dd>

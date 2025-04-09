@@ -1,5 +1,3 @@
-import { mdiWrench } from "@mdi/js";
-import Icon from "@mdi/react";
 import {
   Popover,
   PopoverContent,
@@ -14,33 +12,28 @@ export type Note = {
   description: string;
 };
 
-type Props = HelpProps;
+type Props = HelpProps & {
+  children: React.ReactNode;
+};
 
 export default function RiskHelp({
   note,
   ecosystem,
   packageName,
-  score,
   source,
+  children,
 }: Props) {
   if (note == null) {
     return null;
   }
   return (
     <Popover>
-      <PopoverTrigger>
-        <Icon
-          path={mdiWrench}
-          className="cursor-pointer text-slate-300 hover:text-slate-500"
-          size={0.75}
-        />
-      </PopoverTrigger>
+      <PopoverTrigger>{children}</PopoverTrigger>
       <PopoverContent>
         <HelpContent
           note={note}
           ecosystem={ecosystem}
           packageName={packageName}
-          score={score}
           source={source}
         />
       </PopoverContent>
