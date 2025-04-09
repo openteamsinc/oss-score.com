@@ -2,6 +2,7 @@ import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import InfoTooltip from "@/components/InfoTooltip";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Shield } from "lucide-react";
 
 export default async function PackageScoreLoading() {
   return (
@@ -10,7 +11,10 @@ export default async function PackageScoreLoading() {
         <Card>
           <CardHeader>
             <CardTitle>
-              <span className="text-slate-800">Risk Profile</span>
+              <span className="flex text-slate-800">
+                <Shield />
+                Risk Profile
+              </span>
               <InfoTooltip className="ml-auto" anchor="#legal" />
             </CardTitle>
           </CardHeader>

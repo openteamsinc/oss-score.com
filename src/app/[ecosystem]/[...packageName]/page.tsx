@@ -12,6 +12,8 @@ import { fetchPackageScore, fetchNotes } from "@/utils/score_res";
 import InfoTooltip from "@/components/InfoTooltip";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import RiskSection from "./RiskSection";
+import { Code, HelpCircle, Package, Shield } from "lucide-react";
+import Link from "next/link";
 
 type Props = {
   params: Promise<{
@@ -40,9 +42,14 @@ export default async function PackageScoreComponent({ params }: Props) {
       <div>
         <Card>
           <CardHeader>
-            <CardTitle>
-              <span className="text-slate-800">Risk Profile</span>
-              <InfoTooltip className="ml-auto" anchor="#legal" />
+            <CardTitle className="border-b pb-2">
+              <span className="flex text-slate-800">
+                <Shield className="mr-1 inline-block size-4" />
+                <span className="grow">Risk Profile</span>
+                <Link href={`/categories`}>
+                  <HelpCircle className="ml-2 size-4 text-slate-500 hover:text-slate-700" />
+                </Link>
+              </span>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -86,7 +93,12 @@ export default async function PackageScoreComponent({ params }: Props) {
       <div className="flex flex-col space-y-2">
         <Card>
           <CardHeader>
-            <CardTitle>Package</CardTitle>
+            <CardTitle className="border-b pb-2">
+              <span className="flex text-slate-800">
+                <Package className="mr-1 inline-block size-4" />
+                <span className="grow">Package</span>
+              </span>
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <PackageStats score={score} pkg={pkg} ecosystem={ecosystem} />
@@ -94,7 +106,12 @@ export default async function PackageScoreComponent({ params }: Props) {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Source</CardTitle>
+            <CardTitle className="border-b pb-2">
+              <span className="flex text-slate-800">
+                <Code className="mr-1 inline-block size-4" />
+                <span className="grow">Source</span>
+              </span>
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <OtherStats score={score} source={source} />
