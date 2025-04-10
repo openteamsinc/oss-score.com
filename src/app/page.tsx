@@ -3,6 +3,8 @@ import SearchAutocomplete from "@/components/Search/SearchAutocomplete";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, Book, Github } from "lucide-react";
 import Link from "next/link";
+import RecentPackages from "./RecentPackages";
+import LoadingRecentPackages from "./LoadingRecentPackages";
 
 export default function Home() {
   return (
@@ -59,6 +61,12 @@ export default function Home() {
           </CardContent>
         </Card>
       </div>
+      <div className="mt-12 text-center">
+        <p className="mb-4 text-xl">Recent Packages</p>
+      </div>
+      <React.Suspense fallback={<LoadingRecentPackages />}>
+        <RecentPackages />
+      </React.Suspense>
     </div>
   );
 }

@@ -1,7 +1,7 @@
+"use server";
 import { NotesResponse, Package, ScoreResponse } from "./scoreTypes";
 
-const BASE_URL =
-  process.env.SCORE_URL || "https://score-845372508455.us-west1.run.app";
+const BASE_URL = process.env.SCORE_URL || "https://opensourcescore.dev";
 
 export async function fetchPackageScore(
   ecosystem: string,
@@ -46,4 +46,13 @@ export async function fetchNotes(): Promise<NotesResponse> {
   const res = await fetch(url);
   const data = await res.json();
   return data;
+}
+
+type RecentPackage = [string, string];
+export async function fetchRecentPackages(): Promise<RecentPackage[]> {
+  const url = `${BASE_URL}/recent/packages`;
+  const res = await fetch(url);
+  const data = await res.json();
+  console.log("data", data);
+  return data.recent_packages;
 }
