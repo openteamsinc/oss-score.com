@@ -19,7 +19,7 @@ export default function PackageStats({ pkg, ecosystem }: Props) {
         <dt className="mb-1 grow text-slate-500">{ecosystem}</dt>
         <dd className="flex items-center text-blue-900 ">
           <Link
-            className="inline items-center underline flex"
+            className="flex items-center underline"
             href={`https://pypi.org/project/${pkg.name}`}
           >
             <EcosystemIcon ecosystem={ecosystem} tooltip={false} />
