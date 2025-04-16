@@ -6,6 +6,7 @@ import { ArrowRight, Book, Github } from "lucide-react";
 import Link from "next/link";
 import RecentPackages from "./RecentPackages";
 import LoadingRecentPackages from "./LoadingRecentPackages";
+import { BASE_URL } from "@/utils/score_res";
 
 export default function Home() {
   return (
@@ -39,7 +40,7 @@ export default function Home() {
               your workflow.
             </p>
             <Link
-              href="/docs"
+              href={`${BASE_URL}/docs`}
               className="inline-flex items-center text-blue-500 hover:underline"
             >
               View API Documentation
