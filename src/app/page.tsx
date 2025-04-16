@@ -6,7 +6,8 @@ import { ArrowRight, Book, Github } from "lucide-react";
 import Link from "next/link";
 import RecentPackages from "./RecentPackages";
 import LoadingRecentPackages from "./LoadingRecentPackages";
-import { BASE_URL } from "@/utils/score_res";
+
+const BASE_URL = process.env.SCORE_URL || "https://opensourcescore.dev";
 
 export default function Home() {
   return (
