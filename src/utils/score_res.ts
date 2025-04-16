@@ -53,6 +53,5 @@ export async function fetchRecentPackages(): Promise<RecentPackage[]> {
   const url = `${BASE_URL}/recent/packages`;
   const res = await fetch(url);
   const data = await res.json();
-  console.log("data", data);
   return data.recent_packages;
 }
