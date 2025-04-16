@@ -8,6 +8,13 @@ import FEW_MAX_MONTHLY_AUTHORS from "./FEW_MAX_MONTHLY_AUTHORS";
 import LICENSE_CHECKOUT_ERROR from "./LICENSE_CHECKOUT_ERROR";
 import LICENSE_MODIFIED from "./LICENSE_MODIFIED";
 import { HelpProps } from "./HelpProps";
+import PACKAGE_SKEW_NOT_UPDATED from "./PACKAGE_SKEW_NOT_UPDATED";
+import NO_SOURCE_URL from "./NO_SOURCE_URL";
+import PACKAGE_NO_LICENSE from "./PACKAGE_NO_LICENSE";
+import LAST_COMMIT_OVER_A_YEAR from "./LAST_COMMIT_OVER_A_YEAR";
+import ONE_AUTHOR_THIS_YEAR from "./ONE_AUTHOR_THIS_YEAR";
+import PACKAGE_LICENSE_MISMATCH from "./PACKAGE_LICENSE_MISMATCH";
+import LAST_COMMIT_OVER_5_YEARS from "./LAST_COMMIT_OVER_5_YEARS";
 
 function getComponent(code: string): React.FC<HelpProps> {
   switch (code) {
@@ -27,6 +34,20 @@ function getComponent(code: string): React.FC<HelpProps> {
       return LICENSE_CHECKOUT_ERROR;
     case "LICENSE_MODIFIED":
       return LICENSE_MODIFIED;
+    case "PACKAGE_SKEW_NOT_UPDATED":
+      return PACKAGE_SKEW_NOT_UPDATED;
+    case "NO_SOURCE_URL":
+      return NO_SOURCE_URL;
+    case "PACKAGE_NO_LICENSE":
+      return PACKAGE_NO_LICENSE;
+    case "LAST_COMMIT_OVER_A_YEAR":
+      return LAST_COMMIT_OVER_A_YEAR;
+    case "ONE_AUTHOR_THIS_YEAR":
+      return ONE_AUTHOR_THIS_YEAR;
+    case "PACKAGE_LICENSE_MISMATCH":
+      return PACKAGE_LICENSE_MISMATCH;
+    case "LAST_COMMIT_OVER_5_YEARS":
+      return LAST_COMMIT_OVER_5_YEARS;
     default:
       return Generic;
   }
@@ -36,7 +57,7 @@ export default function HelpContent({
   note,
   ecosystem,
   packageName,
-
+  pkg,
   source,
 }: HelpProps) {
   const Component = getComponent(note.code);
@@ -46,6 +67,7 @@ export default function HelpContent({
       ecosystem={ecosystem}
       packageName={packageName}
       source={source}
+      pkg={pkg}
     />
   );
 }

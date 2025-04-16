@@ -8,7 +8,7 @@ export default function Header({ title, children }: Props) {
       <h1 className="mb-4 border-b text-lg text-slate-900">{title}</h1>
 
       <h2 className="mb-2 text-base text-slate-900">What could this mean?</h2>
-      <p className="p-2 text-sm">{children}</p>
+      <div className="p-2 text-sm">{children}</div>
     </>
   );
 }

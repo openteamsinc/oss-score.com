@@ -22,6 +22,7 @@ export default function RiskHelp({
   packageName,
   source,
   children,
+  pkg,
 }: Props) {
   if (note == null) {
     return null;
@@ -35,6 +36,7 @@ export default function RiskHelp({
           ecosystem={ecosystem}
           packageName={packageName}
           source={source}
+          pkg={pkg}
         />
       </PopoverContent>
     </Popover>

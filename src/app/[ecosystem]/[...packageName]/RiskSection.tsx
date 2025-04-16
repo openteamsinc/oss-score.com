@@ -1,5 +1,10 @@
 import Risk from "@/components/Risk";
-import { CategorizedScore, NoteDescr, Source } from "@/utils/scoreTypes";
+import {
+  CategorizedScore,
+  NoteDescr,
+  Package,
+  Source,
+} from "@/utils/scoreTypes";
 import NoteList from "./NotesList";
 
 type RiskSectionProps = {
@@ -8,6 +13,7 @@ type RiskSectionProps = {
   ecosystem: string;
   notes: { [key: string]: NoteDescr };
   source: Source;
+  pkg: Package;
   categorizedScore: CategorizedScore;
 };
 export default function RiskSection({
@@ -17,6 +23,7 @@ export default function RiskSection({
   source,
   categorizedScore,
   name,
+  pkg,
 }: RiskSectionProps) {
   return (
     <section className="">
@@ -30,6 +37,7 @@ export default function RiskSection({
         scoreNotes={categorizedScore.notes}
         name={name}
         source={source}
+        pkg={pkg}
       />
     </section>
   );

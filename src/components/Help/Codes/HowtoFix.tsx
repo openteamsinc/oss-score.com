@@ -3,9 +3,9 @@ type Props = {
 };
 export default function HowToFix({ children }: Props) {
   return (
-    <>
+    <div>
       <h2 className="mb-2 text-base text-slate-900">How to Fix</h2>
-      <p className="p-2 text-sm">{children}</p>
-    </>
+      <div className="p-2 text-sm">{children}</div>
+    </div>
   );
 }

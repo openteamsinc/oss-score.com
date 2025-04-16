@@ -5,7 +5,7 @@ import Icon from "@mdi/react";
 
 import RiskHelp from "@/components/Help/Risk";
 
-import { NoteDescr, Source } from "@/utils/scoreTypes";
+import { NoteDescr, Package, Source } from "@/utils/scoreTypes";
 
 type Props = {
   name: string;
@@ -13,6 +13,7 @@ type Props = {
   notes: { [key: string]: NoteDescr };
   scoreNotes: string[];
   source: Source;
+  pkg: Package;
 };
 
 export default function NoteList({
@@ -21,6 +22,7 @@ export default function NoteList({
   name,
   source,
   scoreNotes,
+  pkg,
 }: Props) {
   return (
     <ul className="w-full list-inside space-y-2 px-2 text-xs text-slate-500">
@@ -36,6 +38,7 @@ export default function NoteList({
               ecosystem={ecosystem}
               packageName={name}
               source={source}
+              pkg={pkg}
             >
               <span className="inline-block cursor-pointer hover:underline">
                 {notes[noteId]?.description || `Unknown id ${noteId}`}
