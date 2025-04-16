@@ -57,7 +57,7 @@ export default function Home() {
               requests.
             </p>
             <a
-              href="https://github.com/openteamsinc/actions/"
+              href="https://github.com/openteamsinc/score"
               className="inline-flex items-center text-green-500 hover:underline"
             >
               Use the GitHub Action
