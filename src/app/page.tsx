@@ -7,6 +7,8 @@ import Link from "next/link";
 import RecentPackages from "./RecentPackages";
 import LoadingRecentPackages from "./LoadingRecentPackages";
 
+const BASE_URL = process.env.SCORE_URL || "https://opensourcescore.dev";
+
 export default function Home() {
   return (
     <div className="container mx-auto px-4">
@@ -39,7 +41,7 @@ export default function Home() {
               your workflow.
             </p>
             <Link
-              href="/docs"
+              href={`${BASE_URL}/docs`}
               className="inline-flex items-center text-blue-500 hover:underline"
             >
               View API Documentation
@@ -56,7 +58,7 @@ export default function Home() {
               requests.
             </p>
             <a
-              href="https://github.com/openteamsinc/actions/"
+              href="https://github.com/openteamsinc/score"
               className="inline-flex items-center text-green-500 hover:underline"
             >
               Use the GitHub Action
