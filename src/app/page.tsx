@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import SearchAutocomplete from "@/components/Search/SearchAutocomplete";
 import { Card, CardContent } from "@/components/ui/card";
@@ -9,9 +10,12 @@ import LoadingRecentPackages from "./LoadingRecentPackages";
 export default function Home() {
   return (
     <div className="container mx-auto px-4">
-      <h1 className="my-8 text-center text-3xl font-bold">
-        Welcome to OpenTeams • Open Source Scoring
-      </h1>
+      <div className="flex flex-col">
+        <img src="/logo.svg" className="h-80" alt="logo" />
+        <h1 className="my-8 text-center text-3xl font-bold">
+          Open Source Scoring
+        </h1>
+      </div>
       <div className="mx-auto max-w-2xl">
         <SearchAutocomplete />
       </div>

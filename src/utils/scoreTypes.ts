@@ -56,6 +56,7 @@ export type ScoreResponse = {
 
 export type NoteDescr = {
   code: string;
+  group: string;
   category: string;
   description: string;
   id: number;

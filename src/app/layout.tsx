@@ -15,21 +15,21 @@ export const metadata: Metadata = {
 
 function Header() {
   return (
-    <header className="bg-[#0A165D] p-4 text-white">
+    <header className="bg-[#2d1b4e] p-4 text-white">
       <div className="container mx-auto flex items-center justify-between">
         <Link href="/">
           {/* eslint-disable @next/next/no-img-element */}
-          <img src="/logo.svg" className="h-8" alt="openteams logo" />
+          <img src="/logo.svg" className="h-16" alt="openteams logo" />
         </Link>
         <nav>
           <ul className="flex space-x-4">
             <li className="flex items-center">
               <Link
-                href="https://github.com/openteamsinc/score"
+                href="https://github.com/openteamsinc"
                 className="flex items-center hover:underline"
               >
                 <Icon path={mdiGithub} size={1} />
-                openteamsinc/score
+                openteamsinc
               </Link>
             </li>
           </ul>
@@ -41,7 +41,7 @@ function Header() {
 
 function Footer() {
   return (
-    <footer className="mt-8 bg-gray-200 p-4">
+    <footer className="mt-8 flex min-h-32 flex-col justify-center bg-[#2d1b4e] p-4 text-white">
       <div className="container mx-auto text-center">
         <p>&copy; {new Date().getFullYear()} OpenTeams. All rights reserved.</p>
       </div>
