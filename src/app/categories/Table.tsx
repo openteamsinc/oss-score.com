@@ -9,6 +9,7 @@ import {
 
 type Note = {
   code: string;
+  group: string;
   category: string;
   description: string;
   id: number;
@@ -22,6 +23,7 @@ type NotesData = {
 
 export default function CategoriesTable({ notes, categories }: NotesData) {
   // Group notes by category
+  console.log(notes);
   const notesByCategory = Object.values(notes).reduce(
     (acc, note) => {
       if (!acc[note.category]) {
