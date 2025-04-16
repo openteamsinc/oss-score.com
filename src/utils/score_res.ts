@@ -1,4 +1,3 @@
-"use server";
 import { NotesResponse, Package, ScoreResponse } from "./scoreTypes";
 
 export const BASE_URL = process.env.SCORE_URL || "https://opensourcescore.dev";
