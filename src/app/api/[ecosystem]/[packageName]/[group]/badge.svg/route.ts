@@ -23,16 +23,7 @@ export async function GET(request: NextRequest, { params }: Params) {
   const { searchParams } = new URL(request.url);
   const { ecosystem, packageName, group } = await params;
 
-  console.log({ ecosystem, packageName, group });
-  // console.log({ request });
-
-  const {
-    // package: pkg,
-    status,
-    score,
-    // source,
-    // errorMessage,
-  } = await fetchPackageScore(ecosystem, packageName);
+  const { status, score } = await fetchPackageScore(ecosystem, packageName);
 
   if (status === "not_found") {
     return new NextResponse("Package not found", { status: 404 });
