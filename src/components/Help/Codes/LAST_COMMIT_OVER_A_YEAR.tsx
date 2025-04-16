@@ -5,7 +5,7 @@ import { format } from "date-fns";
 
 export default function LAST_COMMIT_OVER_A_YEAR({ source }: HelpProps) {
   const lastCommitDate = source.latest_commit
-    ? format(new Date(source.latest_commit), "PPpp")
+    ? format(new Date(source.latest_commit), "PP")
     : "unknown date";
 
   return (
