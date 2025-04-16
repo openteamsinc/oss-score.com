@@ -1,7 +1,7 @@
 "use server";
 import { NotesResponse, Package, ScoreResponse } from "./scoreTypes";
 
-const BASE_URL = process.env.SCORE_URL || "https://opensourcescore.dev";
+export const BASE_URL = process.env.SCORE_URL || "https://opensourcescore.dev";
 
 export async function fetchPackageScore(
   ecosystem: string,
