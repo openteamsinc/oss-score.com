@@ -1,4 +1,4 @@
-import { Source } from "@/utils/scoreTypes";
+import { Package, Source } from "@/utils/scoreTypes";
 
 export type Note = {
   code: string;
@@ -10,4 +10,5 @@ export type HelpProps = {
   ecosystem: string;
   packageName: string;
   source: Source;
+  pkg: Package;
 };

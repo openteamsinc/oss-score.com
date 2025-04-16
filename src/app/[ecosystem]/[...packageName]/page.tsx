@@ -60,6 +60,7 @@ export default async function PackageScoreComponent({ params }: Props) {
                 notes={notes}
                 categorizedScore={score.maturity}
                 source={source}
+                pkg={pkg}
               />
               <RiskSection
                 title="Health"
@@ -68,6 +69,7 @@ export default async function PackageScoreComponent({ params }: Props) {
                 notes={notes}
                 categorizedScore={score.health_risk}
                 source={source}
+                pkg={pkg}
               />
               <RiskSection
                 title="Legal"
@@ -76,6 +78,7 @@ export default async function PackageScoreComponent({ params }: Props) {
                 notes={notes}
                 categorizedScore={score.legal}
                 source={source}
+                pkg={pkg}
               />
               <RiskSection
                 title="Security"
@@ -84,6 +87,7 @@ export default async function PackageScoreComponent({ params }: Props) {
                 notes={notes}
                 categorizedScore={score.security}
                 source={source}
+                pkg={pkg}
               />
             </div>
           </CardContent>
