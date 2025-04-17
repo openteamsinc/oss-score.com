@@ -14,7 +14,7 @@ export default function PackageStats({ pkg, ecosystem }: Props) {
     return null;
   }
   return (
-    <dl className="max-w-md divide-y divide-slate-200 text-slate-900 ">
+    <dl className="w-full divide-y divide-slate-200 text-slate-900 ">
       <div className="flex flex-row pb-3">
         <dt className="mb-1 grow text-slate-500">{ecosystem}</dt>
         <dd className="flex items-center text-blue-900 ">
@@ -22,7 +22,11 @@ export default function PackageStats({ pkg, ecosystem }: Props) {
             className="flex items-center underline"
             href={`https://pypi.org/project/${pkg.name}`}
           >
-            <EcosystemIcon ecosystem={ecosystem} tooltip={false} />
+            <EcosystemIcon
+              ecosystem={ecosystem}
+              tooltip={false}
+              className="size-4"
+            />
             <span className="ml-1">{pkg.name}</span>
           </Link>
         </dd>
