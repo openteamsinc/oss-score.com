@@ -23,7 +23,8 @@ type Props = {
 
 export default async function PackageScoreComponent({ params }: Props) {
   const { ecosystem, packageName } = await params;
-  const name = packageName.join("/");
+
+  const name = packageName.map(decodeURIComponent).join("/");
 
   const [{ notes }, { package: pkg, status, score, source, errorMessage }] =
     await Promise.all([fetchNotes(), fetchPackageScore(ecosystem, name)]);
