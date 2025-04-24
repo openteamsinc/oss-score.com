@@ -5,6 +5,10 @@
   "prettier": {
     "trailingComma": "all"
   },
+  "engines" : { 
+    "node" : ">=22.0.0"
+  },
+  "engineStrict" : true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
