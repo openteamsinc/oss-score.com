@@ -10,7 +10,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { ecosystem, packageName } = await params;
-  const name = packageName.join("/");
+  const name = packageName.map(decodeURIComponent).join("/");
   return {
     title: `Score • ${ecosystem}/${name}`,
     description: `Score for the ${ecosystem} package ${name}`,
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Package({ params, children }: Props) {
   const { ecosystem, packageName } = await params;
-  const name = packageName.join("/");
+  const name = packageName.map(decodeURIComponent).join("/");
   return (
     <article className="container m-auto">
       <h1 className="my-10 text-2xl font-bold">
