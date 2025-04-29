@@ -5,10 +5,10 @@
   "prettier": {
     "trailingComma": "all"
   },
-  "engines" : { 
-    "node" : ">=22.0.0"
+  "engines": {
+    "node": ">=22.0.0"
   },
-  "engineStrict" : true,
+  "engineStrict": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -50,7 +50,7 @@
     "react-toastify": "^11.0.5",
     "string-similarity-js": "^2.1.4",
     "tailwind-merge": "^3.2.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animated": "^2.0.0"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.16",
