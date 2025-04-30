@@ -52,6 +52,12 @@ type RecentPackage = [string, string];
 export async function fetchRecentPackages(): Promise<RecentPackage[]> {
   const url = `${BASE_URL}/recent/packages`;
   const res = await fetch(url);
+  if (res.status != 200) {
+    console.error("Error fetching recent packages:", res.status);
+    const data = await res.json();
+    console.log("response", data);
+    throw new Error("Error fetching recent packages");
+  }
   const data = await res.json();
   return data.recent_packages;
 }
