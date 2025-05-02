@@ -2,8 +2,14 @@ import { fetchRecentPackages } from "@/utils/score_res";
 import SmallPackageCard from "./SmallPackageCard";
 
 export default async function RecentPackages() {
-  const packages = await fetchRecentPackages();
-  console.log("packages", packages);
+  let packages = [];
+  try {
+    packages = await fetchRecentPackages();
+  } catch (err) {
+    console.error("Error fetching recent packages:", err);
+    return <div>Error loading packages</div>;
+  }
+
   return (
     <div className="mt-12 grid grid-cols-4 gap-6">
       {packages.map(([ecosystem, packageName]) => (
