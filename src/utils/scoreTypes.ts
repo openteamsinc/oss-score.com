@@ -18,12 +18,21 @@ export type License = {
   modified: boolean;
   diff: string | null;
   md5: string | null;
+  // --- new fields
+  name: string | null;
+  restrictions: string[];
+
+  additional_text: string | null;
+  spdx_id: string | null;
+  is_osi_approved: boolean | null;
+  // filename where located in repo
+  path: string | null;
 };
 
 export type Source = {
   source_url: string;
   error: string | null;
-  license: License | null;
+  licenses: License[] | null;
   package_destinations: [string, string][];
   recent_authors_count: number | null;
   max_monthly_authors_count: number | null;

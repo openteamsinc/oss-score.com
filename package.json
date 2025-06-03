@@ -13,6 +13,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "type": "tsc --noEmit",
+    "format:fix": "prettier src --write",
+    "format:check": "prettier src --check",
     "lint": "next lint",
     "lint:report": "next lint --output-file eslint_report.json --format json"
   },

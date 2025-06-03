@@ -7,6 +7,9 @@ export default function PACKAGE_NO_LICENSE({
   packageName,
   source,
 }: HelpProps) {
+  const licenses = source.licenses || [];
+  const license = licenses[0];
+
   const npmInstructions = (
     <>
       <p>Add a license field to your package.json file:</p>
@@ -24,7 +27,7 @@ export default function PACKAGE_NO_LICENSE({
       <p>Add license information to your pyproject.toml file:</p>
       <pre className="m-1 bg-slate-200 p-1">
         <code>{`[project]
-license = { text = "${source.license?.license || "<YOUR LICENSE>"}" }
+license = { text = "${license?.spdx_id || "<YOUR LICENSE>"}" }
 `}</code>
       </pre>
     </>
