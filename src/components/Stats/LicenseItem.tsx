@@ -1,6 +1,11 @@
 import { License } from "@/utils/scoreTypes";
 import DiffDialog from "./DiffDialog";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 import { FileText } from "lucide-react";
 
 type Props = {
@@ -14,10 +19,10 @@ export default function LicenseItem({ license }: Props) {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <img 
-                src="/OSI_Keyhole.svg" 
-                alt="OSI Approved" 
-                className="w-4 h-auto"
+              <img
+                src="/OSI_Keyhole.svg"
+                alt="OSI Approved"
+                className="h-auto w-4"
               />
             </TooltipTrigger>
             <TooltipContent>
@@ -28,12 +33,8 @@ export default function LicenseItem({ license }: Props) {
       )}
       <span>{license.name || license.license}</span>
       <DiffDialog
-        title={
-          license.additional_text?.length ? "text added" : "modified"
-        }
-        modified={Boolean(
-          license.modified || license.additional_text?.length,
-        )}
+        title={license.additional_text?.length ? "text added" : "modified"}
+        modified={Boolean(license.modified || license.additional_text?.length)}
         diff={
           license.additional_text?.length
             ? license.additional_text
@@ -44,7 +45,7 @@ export default function LicenseItem({ license }: Props) {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <FileText className="w-4 h-4 text-slate-500" />
+              <FileText className="size-4 text-slate-500" />
             </TooltipTrigger>
             <TooltipContent>
               <p>{license.path}</p>
