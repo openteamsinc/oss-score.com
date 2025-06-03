@@ -3,8 +3,10 @@ import Header from "./Header";
 import { HelpProps } from "./HelpProps";
 
 export default function PACKAGE_LICENSE_MISMATCH({ pkg, source }: HelpProps) {
+  const licenses = source.licenses || [];
+  const license = licenses[0];
   const packageLicense = pkg.license || "unknown";
-  const sourceLicense = source.license?.license || "unknown";
+  const sourceLicense = license?.spdx_id || "unknown";
 
   return (
     <div className="text-base font-normal">

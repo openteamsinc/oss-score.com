@@ -21,7 +21,7 @@ export async function fetchPackageScore(
       source: {
         source_url: "",
         error: "server error",
-        license: null,
+        licenses: [],
         package_destinations: [],
         recent_authors_count: null,
         max_monthly_authors_count: null,

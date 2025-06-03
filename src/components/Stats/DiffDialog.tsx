@@ -11,10 +11,11 @@ import {
 } from "@/components/ui/dialog";
 
 type Props = {
+  title: string;
   diff?: string | null;
   modified: boolean;
 };
-export default function DiffDialog({ modified, diff }: Props) {
+export default function DiffDialog({ title, modified, diff }: Props) {
   if (!modified) {
     return null;
   }
@@ -22,7 +23,7 @@ export default function DiffDialog({ modified, diff }: Props) {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="link" className="text-blue-500">
-          (modified)
+          ({title})
         </Button>
       </DialogTrigger>
       <DialogContent className="min-w-full p-2">

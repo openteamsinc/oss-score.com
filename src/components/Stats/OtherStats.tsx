@@ -1,8 +1,8 @@
 import { Score, Source } from "@/utils/scoreTypes";
 import TimeStat from "../TimeStat";
 import SourceCodeLink from "../SourceCodeLink";
-import DiffDialog from "./DiffDialog";
 import Link from "next/link";
+import LicenseItem from "./LicenseItem";
 
 type Props = {
   score: Score;
@@ -22,13 +22,11 @@ export default async function OtherStats({ source }: Props) {
       </div>
       <TimeStat title="Last Source Update" time={source.latest_commit} />
       <div className="flex flex-row pb-3">
-        <dt className="mb-1 grow text-slate-500">License</dt>
-        <dd className="flex items-center ">
-          {source.license?.license}
-          <DiffDialog
-            modified={Boolean(source.license?.modified)}
-            diff={source.license?.diff}
-          />
+        <dt className="mb-1 grow text-slate-500">Licenses</dt>
+        <dd className="flex flex-col items-end space-y-1">
+          {source.licenses?.map((license, index) => (
+            <LicenseItem key={index} license={license} />
+          )) || "No licenses found"}
         </dd>
       </div>
       <div className="flex flex-row pb-3">
