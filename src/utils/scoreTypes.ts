@@ -1,7 +1,9 @@
 export type Dependency = {
   name: string;
   specifiers: string[];
-  include_check: string | null;
+  environment_marker: string | null;
+  extras: string[];
+  extra_marker: string | null;
 };
 
 export type Package = {
