@@ -39,23 +39,29 @@ export default function PackageStats({ pkg, ecosystem }: Props) {
         <dd className="flex max-w-[300px] flex-col gap-2">
           {pkg.dependencies.length > 0 ? (
             (() => {
-              const groupedDeps = pkg.dependencies.reduce((groups, dep) => {
-                const key = dep.extra_marker || 'default';
-                if (!groups[key]) groups[key] = [];
-                groups[key].push(dep);
-                return groups;
-              }, {} as Record<string, typeof pkg.dependencies>);
+              const groupedDeps = pkg.dependencies.reduce(
+                (groups, dep) => {
+                  const key = dep.extra_marker || "default";
+                  if (!groups[key]) groups[key] = [];
+                  groups[key].push(dep);
+                  return groups;
+                },
+                {} as Record<string, typeof pkg.dependencies>,
+              );
 
               return Object.entries(groupedDeps).map(([group, deps]) => (
                 <div key={group} className="flex flex-col gap-1">
-                  {group !== 'default' && (
+                  {group !== "default" && (
                     <span className="text-xs font-medium text-slate-600">
                       {group}:
                     </span>
                   )}
                   {deps.map((dep, index) => {
                     return (
-                      <div key={index} className="flex flex-row items-center gap-2 ml-2">
+                      <div
+                        key={index}
+                        className="ml-2 flex flex-row items-center gap-2"
+                      >
                         <div className="flex items-center">
                           <Link
                             href={`/${ecosystem}/${dep.name}`}
@@ -65,7 +71,7 @@ export default function PackageStats({ pkg, ecosystem }: Props) {
                           </Link>
                           {dep.extras.length > 0 && (
                             <span className="text-sm text-slate-700">
-                              [{dep.extras.join(',')}]
+                              [{dep.extras.join(",")}]
                             </span>
                           )}
                         </div>
