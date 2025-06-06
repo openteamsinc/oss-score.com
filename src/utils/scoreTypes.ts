@@ -1,3 +1,11 @@
+export type Dependency = {
+  name: string;
+  specifiers: string[];
+  environment_marker: string | null;
+  extras: string[];
+  extra_marker: string | null;
+};
+
 export type Package = {
   name: string;
   ecosystem: string;
@@ -7,6 +15,7 @@ export type Package = {
   source_url_key: string | null;
   release_date: string | null;
   status: string;
+  dependencies: Dependency[];
 };
 
 export type License = {
