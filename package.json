@@ -42,7 +42,7 @@
     "eslint-plugin-tailwindcss": "^3.17.4",
     "install": "^0.13.0",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.511.0",
+    "lucide-react": "^0.513.0",
     "memoizee": "^0.4.17",
     "next": "^15.3.3",
     "p-memoize": "^7.1.1",
