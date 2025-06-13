@@ -25,7 +25,11 @@ export default async function OtherStats({ source }: Props) {
         <dt className="mb-1 grow text-slate-500">Licenses</dt>
         <dd className="flex flex-col items-end space-y-1">
           {source.licenses?.map((license, index) => (
-            <LicenseItem key={index} license={license} />
+            <LicenseItem
+              key={index}
+              license={license}
+              sourceURL={source.source_url}
+            />
           )) || "No licenses found"}
         </dd>
       </div>
